@@ -104,7 +104,7 @@ public:
 	inline int getWidth() const { return info_.biWidth; }
 	inline int getHeight() const { return info_.biHeight; }
 	inline int getRowOffset() const { return row_offset_; }
-	inline ImageBgr24b& getImageBgr24b() { return *this; }
+	inline ImageBgr24b getImageBgr24b() { return *this; }
 
 	//根据width与4的模计算行偏移量
 	void setRowOffset();

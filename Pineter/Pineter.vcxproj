@@ -89,6 +89,7 @@
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="image_bgr_24bit.cpp" />
     <ClCompile Include="image_func.cpp" />
+    <ClCompile Include="ip.cpp" />
     <ClCompile Include="Pineter.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -97,6 +98,7 @@
     <ClInclude Include="colors.h" />
     <ClInclude Include="image_bgr_24bit.h" />
     <ClInclude Include="image_func.h" />
+    <ClInclude Include="ip.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
