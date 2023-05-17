@@ -1,5 +1,9 @@
 #include "Pineter.h"
-
+//https://subingwen.cn/qt/qt-signal-slot/
+//https://www.xinbaoku.com/archive/8yc8sMF5.html
+//https://www.w3cschool.cn/learnroadqt/edlr1j3y.html
+//https://wizardforcel.gitbooks.io/qt-beginning/content/5.html
+//https://qtguide.ustclug.org/
 Pineter::Pineter(QWidget *parent)
     : QMainWindow(parent)
 {
