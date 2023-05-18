@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_Pineter.h"
 #include <qfiledialog.h>
-
+#include <qmessagebox.h>
 #include "ip.h"
 
 class Pineter : public QMainWindow
@@ -16,8 +16,11 @@ public:
 
 public slots:
     void openFile();
+    void bhc();
+    void bwc();
 
 private:
     Ui::PineterClass ui;
     IP* ip;
+    bool is_image_open_;
 };
