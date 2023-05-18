@@ -13,7 +13,7 @@ std::pair<int, int> Bmp::readBmpSize(const char* path)
 	return std::make_pair(i.biWidth, i.biHeight);
 }
 
-Bmp::Bmp(BF_TYPE type, int w, int h): ImageBgr24b(w, h)
+Bmp::Bmp(BF_TYPE type, int w, int h) : ImageBgr24b(w, h)
 {
 	header_.bfType = type;
 	width_ = w;
@@ -29,7 +29,7 @@ Bmp::Bmp(BF_TYPE type, int w, int h): ImageBgr24b(w, h)
 }
 
 //从BMP文件读
-Bmp::Bmp(const char* path): ImageBgr24b(readBmpSize(path).first, readBmpSize(path).second)
+Bmp::Bmp(const char* path) : ImageBgr24b(readBmpSize(path).first, readBmpSize(path).second)
 {
 	std::ifstream ifs(path, std::ios::binary | std::ios::in);
 	if (!ifs.is_open()) throw BmpFileNotExistException();
@@ -96,11 +96,15 @@ void Bmp::save(const char* path)
 		}
 		if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");
 	}
-	ofs.flush();	
+	ofs.flush();
 	ofs.close();
 }
 
 void Bmp::verifyIntegrity()
 {
-	
+	if (header_.bfType != 0x4d42 ||
+		header_.bfReserved1 != 0x00 ||
+		header_.bfReserved2 != 0x00 ||
+		info_.biWidth == 0 ||
+		info_.biHeight == 0) throw IllegalBmpFileException();
 }

@@ -140,5 +140,5 @@ public:
 class IllegalBmpFileException : public std::exception
 {
 public:
-	inline IllegalBmpFileException() : exception((std::string("Illegal bmp file deceted.") + file_path).c_str()) {}
+	inline IllegalBmpFileException() : exception("Illegal bmp file deceted.") {}
 };
