@@ -38,6 +38,7 @@ Bmp::Bmp(const char* path): ImageBgr24b(readBmpSize(path).first, readBmpSize(pat
 	ifs.read((char*)&info_, sizeof(BmpInfoHeader));
 	if (ifs.fail()) throw std::runtime_error("Failed to read Bmp info.");
 
+	verifyIntegrity();
 	setRowOffset();
 
 	char sink = ' ';
@@ -97,4 +98,9 @@ void Bmp::save(const char* path)
 	}
 	ofs.flush();	
 	ofs.close();
+}
+
+void Bmp::verifyIntegrity()
+{
+	
 }

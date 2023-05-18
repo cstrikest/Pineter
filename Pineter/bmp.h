@@ -18,7 +18,7 @@
 //0x00指针
 constexpr const char* ZERO_CHAR = "";
 
-//BMP文件标识符
+//BMP文件标识符，仅支持BM
 enum BF_TYPE
 {
 	BM = 0x4d42,	//Windows3+ ,NT
@@ -72,6 +72,8 @@ private:
 	unsigned int row_offset_;
 	//读bmp文件长宽
 	static std::pair<int, int> readBmpSize(const char*);
+	//验证合法性，不合法抛出异常
+	void verifyIntegrity();
 
 public:
 	//创建空对象
@@ -132,5 +134,11 @@ public:
 class BmpFileNotCantWrite : public std::exception
 {
 public:
-	inline BmpFileNotCantWrite(std::string file_path) : exception((std::string("Can't write image to ") + file_path).c_str()) {}
+	inline BmpFileNotCantWrite(std::string file_path) : exception((std::string("Can't write image to ") + file_path + ".").c_str()) {}
+};
+
+class IllegalBmpFileException : public std::exception
+{
+public:
+	inline IllegalBmpFileException() : exception((std::string("Illegal bmp file deceted.") + file_path).c_str()) {}
 };
