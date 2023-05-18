@@ -8,7 +8,7 @@ class LinearRgb24b : public Raw
 public:
 	TripleRGB* data_;
 
-	LinearRgb24b(int& width, int& height);
+	LinearRgb24b(const unsigned int& width, const unsigned int& height);
 	inline virtual ~LinearRgb24b() { delete[] data_; }
 	LinearRgb24b(const LinearRgb24b&);
 	LinearRgb24b(LinearRgb24b&&) noexcept;
@@ -18,7 +18,6 @@ public:
 	inline int getPixelNum() const { return width_ * height_; }
 	inline int getSize() const { return width_ * height_ * sizeof(TripleRGB); }
 
-	//指定像素重载 括号有点不好读，想用多重方括弧。但是好麻烦
-	TripleRGB* operator()(const int x, const int y) const;
+	TripleRGB* operator()(const unsigned int x, const unsigned int y) override;
 };
 

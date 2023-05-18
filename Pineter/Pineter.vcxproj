@@ -87,18 +87,20 @@
     <QtUic Include="Pineter.ui" />
     <QtMoc Include="Pineter.h" />
     <ClCompile Include="bmp.cpp" />
-    <ClCompile Include="image_bgr_24bit.cpp" />
+    <ClCompile Include="linear_rgb_24bit.cpp" />
     <ClCompile Include="image_func.cpp" />
     <ClCompile Include="ip.cpp" />
+    <ClCompile Include="menu_slots.cpp" />
     <ClCompile Include="Pineter.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />
-    <ClInclude Include="colors.h" />
-    <ClInclude Include="image_bgr_24bit.h" />
+    <ClInclude Include="linear_rgb_24bit.h" />
     <ClInclude Include="image_func.h" />
     <ClInclude Include="ip.h" />
+    <ClInclude Include="pineter_exception.h" />
+    <ClInclude Include="raw.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

@@ -3,7 +3,7 @@
 #include <iostream>
 
 //最大可容许面积
-constexpr int MAX_DATA_SIZE = 32768 * 32768;
+#define MAX_DATA_SIZE 32768 * 32768;
 
 //单像素结构
 struct TripleRGB
@@ -25,8 +25,10 @@ constexpr TripleRGB WHITE = { 255, 255, 255 };
 class Raw
 {
 public:
-	inline Raw(const int& width, const int& height) : width_(width), height_(height) {}
+	inline Raw(const unsigned int& width, const unsigned int& height) : width_(width), height_(height) {}
 
+	//指定像素重载纯虚函数 括号有点不好读，想用多重方括弧。但是好麻烦
+	virtual TripleRGB* operator()(const unsigned int x, const unsigned int y) = 0;
 	unsigned int width_;
 	unsigned int height_;
 };

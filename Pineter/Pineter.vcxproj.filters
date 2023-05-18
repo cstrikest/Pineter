@@ -21,6 +21,9 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\image_header">
+      <UniqueIdentifier>{58f5d312-7066-44f1-8002-8fc249c8d612}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Pineter.qrc">
@@ -40,7 +43,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="image_bgr_24bit.cpp">
+    <ClCompile Include="linear_rgb_24bit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="image_func.cpp">
@@ -52,9 +55,12 @@
     <ClCompile Include="ip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="menu_slots.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="image_bgr_24bit.h">
+    <ClInclude Include="linear_rgb_24bit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="image_func.h">
@@ -63,10 +69,13 @@
     <ClInclude Include="bmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="colors.h">
+    <ClInclude Include="ip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ip.h">
+    <ClInclude Include="raw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pineter_exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
