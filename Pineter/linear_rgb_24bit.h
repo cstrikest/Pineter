@@ -18,6 +18,9 @@ public:
 	inline int getPixelNum() const { return width_ * height_; }
 	inline int getSize() const { return width_ * height_ * sizeof(TripleRGB); }
 
+	//指定像素坐标，返回TripleRGB
 	TripleRGB* operator()(const unsigned int x, const unsigned int y) override;
+	//深复制到data_，根据长宽截断溢出数据
+	void setData(TripleRGB* rawdata) override;
 };
 

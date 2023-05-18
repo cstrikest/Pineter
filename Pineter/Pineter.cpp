@@ -1,58 +1,28 @@
 #include "Pineter.h"
-//https://subingwen.cn/qt/qt-signal-slot/
-//https://www.xinbaoku.com/archive/8yc8sMF5.html
-//https://www.w3cschool.cn/learnroadqt/edlr1j3y.html
-//https://wizardforcel.gitbooks.io/qt-beginning/content/5.html
-//https://qtguide.ustclug.org/
+
 Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 {
-	ip = nullptr;
-	is_image_open_ = false;
-	ui.setupUi(this);
-	connect(ui.action_Open, SIGNAL(triggered()), this, SLOT(openFile()));
-	connect(ui.bh, SIGNAL(clicked()), this, SLOT(bhc()));
-	connect(ui.bw, SIGNAL(clicked()), this, SLOT(bwc()));
+	
+	//ip_ = nullptr;
+
+	file_path_ = "";
+	ui_.setupUi(this);
+	//connect(ui_.action_Open, &QAction::triggered, this, &Pineter::fileOpen);
+	//connect(ui_.action_Save, &QAction::triggered, this, &Pineter::fileSave);
+	//connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::fileSaveAs);
+
 }
 
 Pineter::~Pineter()
 {
-	delete ip;
+	//delete ip_;
 }
 
-void Pineter::openFile()
-{
-	QFileDialog dlg(this, "Open a Bitmap file.", "c:\\", "Bitmap Files (*.bmp)");
-	while (dlg.exec())
-	{
-		try
-		{
-			ip = new IP(dlg.selectedFiles().first().toStdString());
-			ui.label->setText(QString::number(ip->image_->getArea()));
-			is_image_open_ = true;
-			break;
-		}
-		catch (std::exception& e)
-		{
-			ip = nullptr;
-			delete ip;
-			QMessageBox::warning
-			(
-				this,
-				"Failed to load",
-				QString::fromStdString("Failed to load image file.\n") + 
-				dlg.selectedFiles().first() + "\n" + QString::fromStdString(e.what()),
-				QMessageBox::Ok
-			);
-		}
-	}
-}
-
-void Pineter::bhc()
-{
-	ui.label->setText(QString::number(ip->image_->height_));
-}
-
-void Pineter::bwc()
-{
-	ui.label->setText(QString::number(ip->image_->width_));
-}
+//
+//void Pineter::paintEvent(QPaintEvent* event)
+//{
+//	QPainter p(this);
+//	p.setPen(QColor(255, 0, 0));
+//	p.drawPoint(100, 200);
+//	p.drawLine(0, 0, 300, 400);
+//}

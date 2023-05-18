@@ -1,26 +1,50 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include "ui_Pineter.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include "ip.h"
+#include "ip.h" 
+#include <qpainter.h>
+#include <qcolor.h>
 
 class Pineter : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Pineter(QWidget *parent = nullptr);
-    ~Pineter();
+	Pineter(QWidget* parent = nullptr);
+	~Pineter();
 
-public slots:
-    void openFile();
-    void bhc();
-    void bwc();
+
+private slots:
+	//菜单槽
+	//File
+	//void fileOpen();
+	//void fileSave();
+	//void fileSaveAs();
+	//void fileClose();
+	//void fileQuit();
+	//
+	////Edit 自动生成项
+	//void edit(const char* editFunc);
+
+	////About
+	//void aboutPineapple();
+
+
+
+
 
 private:
-    Ui::PineterClass ui;
-    IP* ip;
-    bool is_image_open_;
+	Ui::PineterClass ui_;
+	//IP* ip_;
+	//已打开文件的path，新建的文件则为空
+	QString file_path_;
+	//void paintEvent(QPaintEvent* event);
+};
+
+class NoActiveImageFoundException : public std::exception
+{
+public: NoActiveImageFoundException() : std::exception("Opening image not found.") {}
 };

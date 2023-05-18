@@ -4,7 +4,7 @@
 
 namespace image_func
 {
-	ImageBgr24b& randMagenta(ImageBgr24b& img)
+	LinearRgb24b& randMagenta(LinearRgb24b& img)
 	{
 		for (int x = img.width_ - 1; x >= 0; --x)
 		{
@@ -17,7 +17,7 @@ namespace image_func
 		return img;
 	}
 
-	ImageBgr24b& chaos(ImageBgr24b& img)
+	LinearRgb24b& chaos(LinearRgb24b& img)
 	{
 		for (int x = img.width_ - 1; x >= 0; --x)
 		{
@@ -31,7 +31,7 @@ namespace image_func
 		return img;
 	}
 
-	ImageBgr24b& verticalMosaic(ImageBgr24b& img)
+	LinearRgb24b& verticalMosaic(LinearRgb24b& img)
 	{
 		for (int i = img.width_ - 1; i >= 0; --i)
 		{
@@ -48,7 +48,7 @@ namespace image_func
 		return img;
 	}
 
-	ImageBgr24b& horizontalFlip(ImageBgr24b& img)
+	LinearRgb24b& horizontalFlip(LinearRgb24b& img)
 	{
 		for (int y = 0; y < img.height_; y++)
 		{
@@ -60,7 +60,7 @@ namespace image_func
 		return img;
 	}
 
-	ImageBgr24b& verticalFlip(ImageBgr24b& img)
+	LinearRgb24b& verticalFlip(LinearRgb24b& img)
 	{
 		for (int x = 0; x < img.width_; x++)
 		{
@@ -72,7 +72,7 @@ namespace image_func
 		return img;
 	}
 
-	ImageBgr24b& fullReverse(ImageBgr24b& img)
+	LinearRgb24b& fullReverse(LinearRgb24b& img)
 	{
 		return img >> horizontalFlip >> verticalFlip;
 	}

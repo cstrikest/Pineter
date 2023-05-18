@@ -13,22 +13,19 @@
 //使用包含RGB三个颜色数据的结构代表每个像素（RAW数据)
 
 #include <fstream>
-#include "image_bgr_24bit.h"
+#include "raw.h"
+#include "pineter_exception.h"
 
 //0x00指针
-constexpr const char* ZERO_CHAR = "";
+#define ZERO_CHAR  ""
 
-//BMP文件标识符，仅支持BM
-enum BF_TYPE
-{
-	BM = 0x4d42,	//Windows3+ ,NT
-	BA = 0x4142,	//OS/2	Bitmap Array
-	CI = 0x4943,	//		Color Icon
-	CP = 0x5043,	//		Color pointer
-	IC = 0x4349,	//		Icon
-	PT = 0x5450		//		Pointer
-};
-
+//BMP文件标识符，目前仅支持BM
+#define BITMAP_BM 0x4d42	//Windows3+,NT	Bitmap
+#define BITMAP_BA 0x4142	//OS/2			Bitmap Array
+#define BITMAP_CI 0x4943	//				Color Icon
+#define BITMAP_CP 0x5043	//				Color pointer
+#define BITMAP_IC 0x4349	//				Icon
+#define BITMAP_PT 0x5450	//				Pointer
 
 //按照n字节对齐
 //不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
@@ -36,7 +33,7 @@ enum BF_TYPE
 //BMP文件头 定义了文件标识符 文件大小等											14bytes
 struct BmpFileHeader
 {
-	unsigned short			bfType;					//标识符，一般是BM			2
+	unsigned short			bfType = BITMAP_BM;		//位图标识符				2
 	unsigned int			bfSize;					//文件大小				4
 	const unsigned short	bfReserved1 = 0x00;		//固定置0位				2
 	const unsigned short	bfReserved2 = 0x00;		//固定置0位				2
@@ -61,84 +58,43 @@ struct BmpInfoHeader
 	const unsigned int		biClrImportant = 0;		//重要颜色索引数 0为都重要	4
 };
 
-class Bmp : public ImageBgr24b
+class Bmp
 {
 private:
 	//BMP文件头
 	BmpFileHeader header_;
 	//BMP信息头
 	BmpInfoHeader info_;
+	//BMP二进制数据
+	char* bmpBinary;
 	//补0行偏移量
 	unsigned int row_offset_;
 	//读bmp文件长宽
 	static std::pair<int, int> readBmpSize(const char*);
 	//验证合法性，不合法抛出异常
 	void verifyIntegrity();
+	//gpt
+	int toImageData(int b_x, int b_y);
+	int toBmpBinary(int x, int y);
+	
 
 public:
-	//创建空对象
-	Bmp(BF_TYPE type, int width, int height);
-	//从BMP文件读
+	//新建Bmp对象
+	Bmp(const unsigned int& width, const unsigned int& height);
+	//从BMP文件新建对象
 	Bmp(const char* path);
-	//从RAW创建
-	Bmp(BF_TYPE, const ImageBgr24b&);
+	inline ~Bmp() { delete[] bmpBinary; }
 
-	inline virtual ~Bmp() { std::cout << "del bmp" << std::endl; }
-	inline Bmp(const Bmp& bmp) :
-		ImageBgr24b(bmp),
-		header_(bmp.header_),
-		info_(bmp.info_),
-		row_offset_(bmp.row_offset_) {
-		std::cout << "copy image" << std::endl;
-	}
-	inline Bmp(Bmp&& bmp) noexcept :
-		ImageBgr24b(bmp),
-		header_(bmp.header_),
-		info_(bmp.info_),
-		row_offset_(bmp.row_offset_) {
-		std::cout << "move image" << std::endl;
-	}
-
-	inline int getImgSize() const { return info_.biWidth * info_.biHeight * 3; }
-	inline int getPixelNumber() const { return info_.biWidth * info_.biHeight; }
 	inline int getBfSize() const { return header_.bfSize; }
 	inline int getBiSize() const { return info_.biSize; }
-	inline int getWidth() const { return info_.biWidth; }
-	inline int getHeight() const { return info_.biHeight; }
 	inline int getRowOffset() const { return row_offset_; }
-	inline ImageBgr24b getImageBgr24b() { return *this; }
 
 	//根据width与4的模计算行偏移量
 	void setRowOffset();
 
+	//写数据到Raw类型对象
+	void toRaw(Raw& raw);
 	//写BMP文件
-	void save(const char* path);
+	void save(const char* path, Raw &raw);
 
-};
-
-//异常类定义
-class BmpInvalidIndexException : public std::invalid_argument
-{
-public:
-	inline BmpInvalidIndexException(int x, int y)
-		: std::invalid_argument("Invalid pixel index. x: " +
-			std::to_string(x) + " y: " + std::to_string(y)) {}
-};
-
-class BmpFileNotExistException : public std::exception
-{
-public:
-	inline BmpFileNotExistException() : exception("File not exist.") {}
-};
-
-class BmpFileNotCantWrite : public std::exception
-{
-public:
-	inline BmpFileNotCantWrite(std::string file_path) : exception((std::string("Can't write image to ") + file_path + ".").c_str()) {}
-};
-
-class IllegalBmpFileException : public std::exception
-{
-public:
-	inline IllegalBmpFileException() : exception("Illegal bmp file deceted.") {}
 };

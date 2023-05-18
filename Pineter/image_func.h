@@ -2,23 +2,23 @@
 #include "image_bgr_24bit.h"
 
 // 图像处理命名空间
-// ImageBgr24b& (*)(ImageBgr24b&)类型的函数实现了>>重载，支持链式调用
+// LinearRgb24b& (*)(LinearRgb24b&)类型的函数实现了>>重载，支持链式调用
 // image>>horizontalFilp>>fillColor;
 namespace image_func
 {
-	typedef ImageBgr24b& (*DIRECT_IMAGE_FUNC)(ImageBgr24b&);
+	typedef LinearRgb24b& (*DIRECT_IMAGE_FUNC)(LinearRgb24b&);
 
-	inline ImageBgr24b& operator>>(ImageBgr24b& img, DIRECT_IMAGE_FUNC f)
+	inline LinearRgb24b& operator>>(LinearRgb24b& img, DIRECT_IMAGE_FUNC f)
 	{
 		f(img);
 		return img;
 	}
 
-	ImageBgr24b& randMagenta(ImageBgr24b& img);
-	ImageBgr24b& chaos(ImageBgr24b& img);
-	ImageBgr24b& verticalMosaic(ImageBgr24b& img);
+	LinearRgb24b& randMagenta(LinearRgb24b& img);
+	LinearRgb24b& chaos(LinearRgb24b& img);
+	LinearRgb24b& verticalMosaic(LinearRgb24b& img);
 
-	ImageBgr24b& horizontalFlip(ImageBgr24b& img);
-	ImageBgr24b& verticalFlip(ImageBgr24b& img);
-	ImageBgr24b& fullReverse(ImageBgr24b& img);
+	LinearRgb24b& horizontalFlip(LinearRgb24b& img);
+	LinearRgb24b& verticalFlip(LinearRgb24b& img);
+	LinearRgb24b& fullReverse(LinearRgb24b& img);
 }
