@@ -88,7 +88,6 @@ public:
 	inline int getRowOffset() const { return row_offset_; }
 
 	//转换到BMP二进制数据(不包含文件头和信息头)
-	//返回的指针需要delete[]
 	char* toBmpBinary(Raw& raw);
 	//写数据到LinearRgb24b类
 	LinearRgb24b* toLinearRgb24b() const;

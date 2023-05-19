@@ -26,8 +26,3 @@ TripleRGB* LinearRgb24b::operator()(const unsigned int x, const unsigned int y)
 	if (x < 0 || y < 0 || x >= width_ || y >= height_) throw InvalidIndexException(x, y);
 	return data_ + (y * width_ + x);
 }
-
-void LinearRgb24b::setData(TripleRGB* rawdata)
-{
-	memcpy(data_, rawdata, getSize());
-}

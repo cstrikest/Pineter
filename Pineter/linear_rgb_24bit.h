@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "raw.h"
 
-//图像RAW数据类，线性储存各个像素BGR值
+//图像RAW数据类，线性储存各个像素RGB值
 //左上角为原点，坐标从0开始
 class LinearRgb24b : public Raw
 {

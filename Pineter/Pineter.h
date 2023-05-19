@@ -18,7 +18,6 @@ public:
 	Pineter(QWidget* parent = nullptr);
 	inline ~Pineter() { delete image_; }
 
-
 private slots:
 	//菜单槽
 	//File

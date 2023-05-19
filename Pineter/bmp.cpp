@@ -10,7 +10,9 @@ Bmp::Bmp(Raw& raw)
 	header_.bfSize = (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits;
 	info_.biSizeImage = (info_.biWidth * 3 + row_offset_) * info_.biHeight;
 
-	bmp_binary_ = new char[header_.bfOffBits + info_.biSizeImage];
+	bmp_binary_ = new char[header_.bfSize];
+
+	//不含头的BMP格式二进制图像数据
 	char* image_data = toBmpBinary(raw);
 	memcpy(bmp_binary_, &header_, sizeof(BmpFileHeader));
 	memcpy(bmp_binary_ + sizeof(BmpFileHeader), &info_, sizeof(BmpInfoHeader));
@@ -20,19 +22,30 @@ Bmp::Bmp(Raw& raw)
 
 Bmp::Bmp(const char* path)
 {
+	//文件指针初始位置定位到文件尾  std::ios::ate
+	std::ifstream ifs(path, std::ios::binary | std::ios::ate);
 
-	std::ifstream ifs(path, std::ios::binary | std::ios::in);
 	if (!ifs.is_open()) throw FileNotExistException();
-	else while (ifs >> bmp_binary_);
+
+	//获取文件大小
+	std::streamsize size = ifs.tellg();
+	//指回文件头
+	ifs.seekg(0, std::ios::beg);
+	//创建临时内存
+	char* buffer = new char[size];
+	if (!ifs.read(buffer, size)) throw FileNotCantWrite(QString(path));
 	ifs.close();
 
-	memcpy((char*)&header_, bmp_binary_, sizeof(BmpFileHeader));
-	memcpy((char*)&info_, bmp_binary_ + sizeof(BmpFileHeader), sizeof(BmpInfoHeader));
+	memcpy((char*)&header_, buffer, sizeof(BmpFileHeader));
+	memcpy((char*)&info_, buffer + sizeof(BmpFileHeader), sizeof(BmpInfoHeader));
 
-	bmp_binary_ = new char[info_.biSizeImage];
+	bmp_binary_ = new char[header_.bfSize];
 
-	verifyIntegrity();
+	memcpy(bmp_binary_, buffer, header_.bfSize);
+	delete[] buffer;
+
 	row_offset_ = getRowOffset(info_.biWidth);
+	verifyIntegrity();
 }
 
 void Bmp::verifyIntegrity()
@@ -40,8 +53,8 @@ void Bmp::verifyIntegrity()
 	if (header_.bfType != 0x4d42 ||
 		header_.bfReserved1 != 0x00 ||
 		header_.bfReserved2 != 0x00 ||
-		info_.biWidth != 0 ||
-		info_.biHeight != 0 ||
+		info_.biWidth == 0 ||
+		info_.biHeight == 0 ||
 		header_.bfSize != (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits ||
 		info_.biSizeImage != (info_.biWidth * 3 + row_offset_) * info_.biHeight)
 		throw IllegalBmpFileException();
@@ -52,21 +65,20 @@ char* Bmp::toBmpBinary(Raw& raw)
 	int offset = getRowOffset(raw.width_);
 	int size = (raw.width_ * 3 + offset) * raw.height_;
 	char* data = new char[size];
-	unsigned int index = 0;
+
+	unsigned int cursor = 0;
 	//BMP像素顺序从左下开始 所以反转y轴坐标开始遍历
 	for (int j = raw.height_ - 1; j >= 0; --j)
 	{
 		for (int i = 0; i < raw.width_; ++i)
 		{
 			//B G R顺序写3字节
-			data[index++] = raw(i, j)->b;
-			data[index++] = raw(i, j)->g;
-			data[index++] = raw(i, j)->r;
-	;	}
-		for (int o = 0; o < offset; ++o)
-		{
-			data[index++] = '\0';
+			data[cursor++] = raw(i, j)->b;
+			data[cursor++] = raw(i, j)->g;
+			data[cursor++] = raw(i, j)->r;
+			;
 		}
+		for (int o = 0; o < offset; ++o) data[cursor++] = 0;
 	}
 	return data;
 }
@@ -79,6 +91,9 @@ LinearRgb24b* Bmp::toLinearRgb24b() const
 
 	int each_pixel_start_index = 0;
 	TripleRGB temp{ 0, 0, 0 };
+
+	int cursor = header_.bfOffBits;
+
 	//这里循环的是左下角为原点的BMP格式坐标
 	for (int y = 0; y < info_.biHeight; ++y)
 	{
@@ -86,30 +101,17 @@ LinearRgb24b* Bmp::toLinearRgb24b() const
 		{
 			//每行有width*3+row_offset_个字节
 			//单像素BGR数据 B位
-			each_pixel_start_index = y * (info_.biWidth * 3 + row_offset_) + x * 3;
-
-			temp.b = bmp_binary_[each_pixel_start_index];
-			temp.g = bmp_binary_[each_pixel_start_index + 1];
-			temp.r = bmp_binary_[each_pixel_start_index + 2];
+			temp.b = bmp_binary_[cursor++];
+			temp.g = bmp_binary_[cursor++];
+			temp.r = bmp_binary_[cursor++];
 
 			*((*image)(x, info_.biHeight - y - 1)) = temp;
 		}
+		for (int o = 0; o < row_offset_; ++o) cursor++;
+		//info_.biWidth * 3 + row_offset_;
 	}
 	return image;
 }
-
-//void Bmp::toRaw(Raw& raw)
-//{
-//	char sink = ' ';
-//	for (int by = 0; by < info_.biHeight; by++)
-//	{
-//		for (int bx = 0; bx < info_.biWidth; bx++)
-//		{
-//			memcpy(raw(bx, raw.height_ - by - 1),
-//				(bmp_binary_ + row_offset_ * by) + (by * info_.biWidth + bx), 3);
-//		}
-//	}
-//}
 
 unsigned int Bmp::getRowOffset(const unsigned int& width) const
 {
@@ -120,8 +122,7 @@ void Bmp::save(const char* path) const
 {
 	std::ofstream ofs(path, std::ios::binary | std::ios::out);
 	if (!ofs.is_open()) throw FileNotCantWrite(path);
-
-	while (ofs << bmp_binary_);
+	ofs.write(bmp_binary_, header_.bfSize);
 	/*ofs.write((char*)&header_, sizeof(BmpFileHeader));
 	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp header.");
 	ofs.write((char*)&info_, sizeof(BmpInfoHeader));

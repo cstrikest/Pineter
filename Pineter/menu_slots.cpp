@@ -90,7 +90,6 @@ void Pineter::fileSaveAs()
 			file_path_ = dlg.selectedFiles().first();
 			Bmp T(*image_);
 			T.save(file_path_.toLatin1().data());
-			this->setWindowTitle(file_path_);
 			break;
 		}
 		catch (std::exception& e)
