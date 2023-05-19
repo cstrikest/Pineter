@@ -136,15 +136,12 @@ namespace Pineter
 		void Bmp::save(const char* path) const
 		{
 			std::ofstream ofs(path, std::ios::binary | std::ios::out);
-			if (!ofs.is_open()) throw PException::FileNotCantWrite(path);
+			if (!ofs.is_open())
+			{
+				ofs.close();
+				throw PException::FileNotCantWrite(path);
+			}
 			ofs.write(bmp_binary_, header_.bfSize);
-			/*ofs.write((char*)&header_, sizeof(BmpFileHeader));
-			if (ofs.fail()) throw std::runtime_error("Failed to write Bmp header.");
-			ofs.write((char*)&info_, sizeof(BmpInfoHeader));
-			if (ofs.fail()) throw std::runtime_error("Failed to write Bmp info.");
-			ofs.write(bmp_binary_, sizeof(info_.biSizeImage));
-			if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");*/
-
 			ofs.flush();
 			ofs.close();
 		}
