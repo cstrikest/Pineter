@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "image_bgr_24bit.h"
+#include "linear_rgb_24bit.h"
 
 // 图像处理命名空间
 // LinearRgb24b& (*)(LinearRgb24b&)类型的函数实现了>>重载，支持链式调用

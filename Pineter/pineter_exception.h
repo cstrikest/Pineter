@@ -2,44 +2,57 @@
 #include <exception>
 #include <qstring.h>
 
+//Pineter异常类
+class PineterException : public std::exception
+{
+public: inline PineterException(QString msg) : std::exception(msg.toLatin1().data()) {}
+};
+
 //图片面积过大异常
-class TooBigToLoadException : public std::exception
+class TooBigToLoadException : public PineterException
 {
 public: inline TooBigToLoadException(const int& actualSize, const int& maxSize) :
-	std::exception(("Image too big to load. Actual size: " +
+	PineterException("Image too big to load. Actual size: " +
 		QString::number(actualSize) +
 		", Max size: " +
-		QString::number(maxSize)).toLatin1().data()) {}
+		QString::number(maxSize)) {}
 };
 
 //图片坐标索引异常
-class InvalidIndexException : public std::exception
+class InvalidIndexException : public PineterException
 {
 public: inline InvalidIndexException(const int& x, const int& y) :
-	std::exception(("Invalid pixel index. x:" +
+	PineterException("Invalid pixel index. x:" +
 		QString::number(x) +
 		", y: " +
-		QString::number(y)).toLatin1().data()) {}
+		QString::number(y)) {}
 };
 
 //图片不存在异常
-class FileNotExistException : public std::exception
+class FileNotExistException : public PineterException
 {
 public:
-	inline FileNotExistException() : exception("File not exist.") {}
+	inline FileNotExistException() : PineterException("File not exist.") {}
 };
 
 //图片写入异常
-class FileNotCantWrite : public std::exception
+class FileNotCantWrite : public PineterException
 {
 public:
 	inline FileNotCantWrite(QString file_path) : 
-		exception((QString("Can't write image to ") + file_path).toLatin1().data()) {}
+		PineterException("Can't write image to " + file_path) {}
 };
 
 //非法BMP格式异常
-class IllegalBmpFileException : public std::exception
+class IllegalBmpFileException : public PineterException
 {
 public:
-	inline IllegalBmpFileException() : exception("Illegal bmp file deceted.") {}
+	inline IllegalBmpFileException() : PineterException("Illegal bmp file deceted.") {}
+};
+
+//加载文件失败异常
+class LoadImageFailedException : public PineterException
+{
+public:
+	inline LoadImageFailedException() : PineterException("Can't load image.") {}
 };

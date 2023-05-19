@@ -52,9 +52,6 @@
     <ClCompile Include="bmp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="menu_slots.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
     <ClInclude Include="bmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="raw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,5 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

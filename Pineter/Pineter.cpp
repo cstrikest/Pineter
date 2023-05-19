@@ -3,19 +3,19 @@
 Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 {
 	
-	//ip_ = nullptr;
+	ip_ = nullptr;
 
 	file_path_ = "";
 	ui_.setupUi(this);
-	//connect(ui_.action_Open, &QAction::triggered, this, &Pineter::fileOpen);
-	//connect(ui_.action_Save, &QAction::triggered, this, &Pineter::fileSave);
-	//connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::fileSaveAs);
+	connect(ui_.action_Open, &QAction::triggered, this, &Pineter::fileOpen);
+	connect(ui_.action_Save, &QAction::triggered, this, &Pineter::fileSave);
+	connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::fileSaveAs);
 
 }
 
 Pineter::~Pineter()
 {
-	//delete ip_;
+	delete ip_;
 }
 
 //

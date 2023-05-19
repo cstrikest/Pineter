@@ -4,8 +4,7 @@
 LinearRgb24b::LinearRgb24b(const unsigned int& width, const unsigned int& height) : Raw(width, height)
 {
 	int size = width * height * 3;
-	if (size > MAX_DATA_SIZE)
-		throw TooBigToLoadException(size, MAX_DATA_SIZE);
+	if (size > MAX_DATA_SIZE) throw TooBigToLoadException(size, MAX_DATA_SIZE);
 	data_ = new TripleRGB[getPixelNum()];
 }
 

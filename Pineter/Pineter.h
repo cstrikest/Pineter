@@ -20,9 +20,9 @@ public:
 private slots:
 	//菜单槽
 	//File
-	//void fileOpen();
-	//void fileSave();
-	//void fileSaveAs();
+	void fileOpen();
+	void fileSave();
+	void fileSaveAs();
 	//void fileClose();
 	//void fileQuit();
 	//
@@ -38,7 +38,7 @@ private slots:
 
 private:
 	Ui::PineterClass ui_;
-	//IP* ip_;
+	IP* ip_;
 	//已打开文件的path，新建的文件则为空
 	QString file_path_;
 	//void paintEvent(QPaintEvent* event);

@@ -66,35 +66,33 @@ private:
 	//BMP信息头
 	BmpInfoHeader info_;
 	//BMP二进制数据
-	char* bmpBinary;
+	char* bmp_binary_;
 	//补0行偏移量
 	unsigned int row_offset_;
 	//读bmp文件长宽
 	static std::pair<int, int> readBmpSize(const char*);
 	//验证合法性，不合法抛出异常
 	void verifyIntegrity();
-	//gpt
-	int toImageData(int b_x, int b_y);
-	int toBmpBinary(int x, int y);
-	
+	//根据width与4的模计算行偏移量
+	unsigned int getRowOffset(const unsigned int& width) const;
 
 public:
-	//新建Bmp对象
-	Bmp(const unsigned int& width, const unsigned int& height);
+	//从Raw新建Bmp对象
+	Bmp(Raw& raw);
 	//从BMP文件新建对象
 	Bmp(const char* path);
-	inline ~Bmp() { delete[] bmpBinary; }
+	inline ~Bmp() { delete[] bmp_binary_; }
 
 	inline int getBfSize() const { return header_.bfSize; }
 	inline int getBiSize() const { return info_.biSize; }
 	inline int getRowOffset() const { return row_offset_; }
 
-	//根据width与4的模计算行偏移量
-	void setRowOffset();
-
-	//写数据到Raw类型对象
-	void toRaw(Raw& raw);
-	//写BMP文件
-	void save(const char* path, Raw &raw);
+	//转换到BMP二进制数据(不包含文件头和信息头)
+	//返回的指针需要delete[]
+	char* toBmpImageDataBinary(Raw& raw);
+	//写数据到Raw类
+	void toRaw(Raw& raw) const;
+	//从Raw类写BMP文件
+	void save(const char* path) const;
 
 };

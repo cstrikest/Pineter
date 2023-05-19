@@ -1,33 +1,38 @@
 ﻿#include "bmp.h"
 
-Bmp::Bmp(const unsigned int& width, const unsigned int& height)
+Bmp::Bmp(Raw& raw)
 {
-	info_.biWidth = width;
-	info_.biHeight = height;
+	info_.biWidth = raw.width_;
+	info_.biHeight = raw.height_;
 
-	setRowOffset();
+	row_offset_ = getRowOffset(info_.biWidth);
 
-	header_.bfSize = (width * 3 + row_offset_) * height + header_.bfOffBits;
-	info_.biSizeImage = (width * 3 + row_offset_) * height;
+	header_.bfSize = (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits;
+	info_.biSizeImage = (info_.biWidth * 3 + row_offset_) * info_.biHeight;
 
-	bmpBinary = new char[info_.biSizeImage];
+	bmp_binary_ = new char[header_.bfOffBits + info_.biSizeImage];
+	char* image_data = toBmpImageDataBinary(raw);
+	memcpy(bmp_binary_, &header_, sizeof(BmpFileHeader));
+	memcpy(bmp_binary_ + sizeof(BmpFileHeader), &info_, sizeof(BmpInfoHeader));
+	memcpy(bmp_binary_ + sizeof(BmpFileHeader) + sizeof(BmpInfoHeader), image_data, info_.biSizeImage);
+	delete[] image_data;
 }
 
 Bmp::Bmp(const char* path)
 {
+
 	std::ifstream ifs(path, std::ios::binary | std::ios::in);
 	if (!ifs.is_open()) throw FileNotExistException();
-	else
-	{
-		while (ifs >> bmpBinary);
-	}
+	else while (ifs >> bmp_binary_);
 	ifs.close();
 
-	memcpy((char*)&header_, bmpBinary, sizeof(BmpFileHeader));
-	memcpy((char*)&info_, bmpBinary+ sizeof(BmpFileHeader), sizeof(BmpInfoHeader));
+	memcpy((char*)&header_, bmp_binary_, sizeof(BmpFileHeader));
+	memcpy((char*)&info_, bmp_binary_ + sizeof(BmpFileHeader), sizeof(BmpInfoHeader));
+
+	bmp_binary_ = new char[info_.biSizeImage];
 
 	verifyIntegrity();
-	setRowOffset();
+	row_offset_ = getRowOffset(info_.biWidth);
 }
 
 void Bmp::verifyIntegrity()
@@ -35,68 +40,67 @@ void Bmp::verifyIntegrity()
 	if (header_.bfType != 0x4d42 ||
 		header_.bfReserved1 != 0x00 ||
 		header_.bfReserved2 != 0x00 ||
-		info_.biWidth == 0 ||
-		info_.biHeight == 0) throw IllegalBmpFileException();
+		info_.biWidth != 0 ||
+		info_.biHeight != 0 ||
+		header_.bfSize != (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits ||
+		info_.biSizeImage != (info_.biWidth * 3 + row_offset_) * info_.biHeight)
+		throw IllegalBmpFileException();
 }
 
-void Bmp::toRaw(Raw& raw)
+char* Bmp::toBmpImageDataBinary(Raw& raw)
 {
-	char sink = ' ';
-	for (int by = 0; by < info_.biHeight; by++)
+	int offset = getRowOffset(raw.width_);
+	int size = (raw.width_ * 3 + offset) * raw.height_;
+	char* data = new char[size];
+	unsigned int index = 0;
+	//BMP像素顺序从左下开始 所以反转y轴坐标开始遍历
+	for (int j = raw.height_ - 1; j >= 0; ++j)
 	{
-		for (int bx = 0; bx < info_.biWidth; bx++)
+		for (int i = 0; i < raw.width_; --i)
 		{
-			memcpy(raw(bx, raw.height_ - by - 1), 
-				(bmpBinary + row_offset_ * by) + (by * info_.biWidth + bx), 3);
+			//B G R顺序写3字节
+			data[index++] = raw(i, j)->b;
+			data[index++] = raw(i, j)->g;
+			data[index++] = raw(i, j)->r;
+	;	}
+		for (int o = 0; o < offset; ++o)
+		{
+			data[index++] = '\0';
 		}
 	}
+	return data;
 }
 
-void Bmp::setRowOffset()
+//void Bmp::toRaw(Raw& raw)
+//{
+//	char sink = ' ';
+//	for (int by = 0; by < info_.biHeight; by++)
+//	{
+//		for (int bx = 0; bx < info_.biWidth; bx++)
+//		{
+//			memcpy(raw(bx, raw.height_ - by - 1),
+//				(bmp_binary_ + row_offset_ * by) + (by * info_.biWidth + bx), 3);
+//		}
+//	}
+//}
+
+unsigned int Bmp::getRowOffset(const unsigned int& width) const
 {
-	row_offset_ = (info_.biWidth * 3) % 4;
-	if (row_offset_ != 0) row_offset_ = 4 - row_offset_;
+	return ((width * 3) % 4) != 0 ? 4 - ((width * 3) % 4) : 0;
 }
 
-void Bmp::save(const char* path, Raw& raw)
+void Bmp::save(const char* path) const
 {
 	std::ofstream ofs(path, std::ios::binary | std::ios::out);
 	if (!ofs.is_open()) throw FileNotCantWrite(path);
-	//while (ofs << bmpBinary);
-	//ofs.flush();
-	//ofs.close();
 
 	ofs.write((char*)&header_, sizeof(BmpFileHeader));
 	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp header.");
 	ofs.write((char*)&info_, sizeof(BmpInfoHeader));
 	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp info.");
-	for (int by = 0; by < info_.biHeight; by++)
-	{
-		for (int bx = 0; bx < info_.biWidth; bx++)
-		{
-			ofs.write(toBmpBinary(bx, by));
-			//ofs.write((char*)(data_ + (by * info_.biWidth + bx)), 3);
-		}
-		//for (int t = row_offset_; t > 0; t--)
-		//{
-		//	ofs.write("", 1);
-		//}
-		//if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");
-	}
+	ofs.write(bmp_binary_, sizeof(info_.biSizeImage));
+	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");
+
 	ofs.flush();
 	ofs.close();
-}
-
-int Bmp::toImageData(int b_x, int b_y) 
-{
-	int rowBytes = ((info_.biWidth * 3) + 3) & ~3;  // 计算每行像素数据的字节数（补0对齐）
-	int y = info_.biHeight - 1 - b_y;  // 转换坐标
-	int offset = y * rowBytes + b_x * 3;  // 计算偏移量
-	return offset;
-}
-
-int Bmp::toBmpBinary(int x, int y) {
-	int rowBytes = ((info_.biWidth * 3) + 3) & ~3;  // 计算每行像素数据的字节数（补0对齐）
-	int offset = (info_.biHeight - 1 - y) * rowBytes + x * 3;  // 计算偏移量
-	return offset;
 }

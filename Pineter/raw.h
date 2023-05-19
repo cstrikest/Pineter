@@ -3,14 +3,14 @@
 #include <iostream>
 
 //最大可容许面积
-#define MAX_DATA_SIZE 32768 * 32768;
+constexpr int MAX_DATA_SIZE = 32768 * 32768;
 
 //单像素结构
 struct TripleRGB
 {
-	unsigned char			r;
-	unsigned char			g;
-	unsigned char			b;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
 };
 
 //定义颜色
@@ -32,4 +32,21 @@ public:
 	virtual void setData(TripleRGB* rawdata) = 0;
 	unsigned int width_;
 	unsigned int height_;
+};
+
+//多维数组模板结构
+//例
+//Matrix<int, a, b, c, d>::type mat;
+//mat[i][j][k][m] = 0;
+template <typename T, size_t R, size_t... C>
+struct Matrix
+{
+	using Col = typename Matrix<T, C...>::type;
+	using type = std::array<Col, R>;
+};
+
+template <typename T, size_t R>
+struct Matrix<T, R>
+{
+	using type = std::array<T, R>;
 };

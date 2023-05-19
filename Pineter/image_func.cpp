@@ -1,5 +1,4 @@
 #include "image_func.h"
-#include "colors.h"
 #include <cmath>
 
 namespace image_func
@@ -39,9 +38,9 @@ namespace image_func
 			{
 				for (int j = img.height_ - 1; j >= 0; --j)
 				{
-					if (i % 3 == 0) *img(i, j) = Colors::RED;
-					else if (i % 4 == 0) *img(i, j) = Colors::BLUE;
-					else *img(i, j) = Colors::GREEN;
+					if (i % 3 == 0) *img(i, j) = RED;
+					else if (i % 4 == 0) *img(i, j) = BLUE;
+					else *img(i, j) = GREEN;
 				}
 			}
 		}
