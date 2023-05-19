@@ -71,9 +71,31 @@ char* Bmp::toBmpBinary(Raw& raw)
 	return data;
 }
 
+//需要delete
 LinearRgb24b* Bmp::toLinearRgb24b() const
 {
+	char sink = ' ';
+	LinearRgb24b* image = new LinearRgb24b(info_.biWidth, info_.biHeight);
 
+	int each_pixel_start_index = 0;
+	TripleRGB temp{ 0, 0, 0 };
+	//这里循环的是左下角为原点的BMP格式坐标
+	for (int y = 0; y < info_.biHeight; ++y)
+	{
+		for (int x = 0; x < info_.biWidth; ++x)
+		{
+			//每行有width*3+row_offset_个字节
+			//单像素BGR数据 B位
+			each_pixel_start_index = y * (info_.biWidth * 3 + row_offset_) + x * 3;
+
+			temp.b = bmp_binary_[each_pixel_start_index];
+			temp.g = bmp_binary_[each_pixel_start_index + 1];
+			temp.r = bmp_binary_[each_pixel_start_index + 2];
+
+			*((*image)(x, info_.biHeight - y - 1)) = temp;
+		}
+	}
+	return image;
 }
 
 //void Bmp::toRaw(Raw& raw)

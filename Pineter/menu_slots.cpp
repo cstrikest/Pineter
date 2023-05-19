@@ -4,17 +4,17 @@ void Pineter::fileOpen()
 {
 	QFileDialog dlg(this, "Open a Bitmap file.", "c:\\", "Bitmap Files (*.bmp)");
 	while (dlg.exec())
+	{
 		try
 		{
-			file_path_ = dlg.selectedFiles().first();
-			Bmp bmp_reader(file_path_.toLatin1().data());
-			image_ = new LinearRgb24b();
+			Bmp bmp_reader(dlg.selectedFiles().first().toLatin1().data());
+			image_ = bmp_reader.toLinearRgb24b();
 			this->setWindowTitle(file_path_);
+			file_path_ = dlg.selectedFiles().first();
 			break;
 		}
 		catch (std::exception& e)
 		{
-			file_path_ = "";
 			QMessageBox::warning
 			(
 				this,
@@ -33,13 +33,19 @@ void Pineter::fileSave()
 	try
 	{
 		//有图片，没有加载文件 另存为
-		if (file_path_ == "") fileSaveAs();
+		if (file_path_ == "")
+		{
+			fileSaveAs();
+		}
 		//无图片 报错
-		else if (ip_ == nullptr) throw NoActiveImageFoundException();
+		else if (image_ == nullptr)
+		{
+			throw NoActiveImageFoundException();
+		}
 		//有图片，有文件 保存
 		else
 		{
-			//Bmp(BM, *ip_->image_).save(file_path_.toStdString().c_str());
+			Bmp(*image_).save(file_path_.toLatin1().data());
 		}
 	}
 	catch (std::exception& e)
@@ -52,6 +58,7 @@ void Pineter::fileSave()
 			file_path_ + QString::fromStdString(e.what()),
 			QMessageBox::Ok
 		);
+
 		return;
 	}
 }
@@ -60,7 +67,7 @@ void Pineter::fileSaveAs()
 {
 	try
 	{
-	if (ip_ == nullptr) throw NoActiveImageFoundException();
+		if (image_ == nullptr) throw NoActiveImageFoundException();
 	}
 	catch (std::exception& e)
 	{
@@ -81,9 +88,8 @@ void Pineter::fileSaveAs()
 		try
 		{
 			file_path_ = dlg.selectedFiles().first();
-			Bmp T(*ip_->image_);
-			T.save(file_path_.toStdString().c_str());
-			ui_.label->setText(QString::number(ip_->image_->getPixelNum()));
+			Bmp T(*image_);
+			T.save(file_path_.toLatin1().data());
 			this->setWindowTitle(file_path_);
 			break;
 		}
@@ -101,6 +107,7 @@ void Pineter::fileSaveAs()
 		}
 	}
 }
+
 //void Pineter::fileClose();
 //void Pineter::fileQuit();
 //

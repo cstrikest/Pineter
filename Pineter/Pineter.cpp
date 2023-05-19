@@ -13,10 +13,6 @@ Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 
 }
 
-Pineter::~Pineter()
-{
-	delete image_;
-}
 
 //
 //void Pineter::paintEvent(QPaintEvent* event)

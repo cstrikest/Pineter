@@ -16,7 +16,7 @@ class Pineter : public QMainWindow
 
 public:
 	Pineter(QWidget* parent = nullptr);
-	~Pineter();
+	inline ~Pineter() { delete image_; }
 
 
 private slots:
