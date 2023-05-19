@@ -16,7 +16,7 @@
 #include "linear_rgb_24bit.h"
 #include "pineter_exception.h"
 
-//0x00指针
+//0x00
 #define ZERO_CHAR  ""
 
 //BMP文件标识符，目前仅支持BM

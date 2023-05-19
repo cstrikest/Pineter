@@ -20,4 +20,6 @@ public:
 
 	//指定像素坐标，返回TripleRGB
 	TripleRGB* operator()(const unsigned int x, const unsigned int y) override;
+
 };
+
