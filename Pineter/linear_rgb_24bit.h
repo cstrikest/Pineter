@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "raw.h"
 
-//图像RAW数据类，线性储存各个像素BGR值
+//图像RAW数据类，线性储存各个像素RGB值
 //左上角为原点，坐标从0开始
 class LinearRgb24b : public Raw
 {
@@ -20,7 +20,5 @@ public:
 
 	//指定像素坐标，返回TripleRGB
 	TripleRGB* operator()(const unsigned int x, const unsigned int y) override;
-	//深复制到data_，根据长宽截断溢出数据
-	void setData(TripleRGB* rawdata) override;
 };
 

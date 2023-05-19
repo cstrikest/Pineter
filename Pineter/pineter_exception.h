@@ -18,7 +18,7 @@ public: inline TooBigToLoadException(const int& actualSize, const int& maxSize) 
 		QString::number(maxSize)) {}
 };
 
-//图片坐标索引异常
+//非法坐标索引异常
 class InvalidIndexException : public PineterException
 {
 public: inline InvalidIndexException(const int& x, const int& y) :

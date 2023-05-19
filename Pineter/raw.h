@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-//最大可容许面积
+//最大可容许字节数
 constexpr int MAX_DATA_SIZE = 32768 * 32768;
 
 //单像素结构
@@ -35,7 +35,6 @@ public:
 };
 
 //多维数组模板结构
-//例
 //Matrix<int, a, b, c, d>::type mat;
 //mat[i][j][k][m] = 0;
 template <typename T, size_t R, size_t... C>

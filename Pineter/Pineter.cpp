@@ -2,9 +2,7 @@
 
 Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 {
-	
 	image_ = nullptr;
-
 	file_path_ = "";
 	ui_.setupUi(this);
 	connect(ui_.action_Open, &QAction::triggered, this, &Pineter::fileOpen);

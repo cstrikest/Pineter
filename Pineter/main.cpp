@@ -7,5 +7,4 @@ int main(int argc, char *argv[])
     Pineter w;
     w.show();
     return a.exec();
-
 }
