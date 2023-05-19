@@ -15,83 +15,83 @@
 #include <fstream>
 #include "linear_rgb_24bit.h"
 #include "pineter_exception.h"
-
-//0x00
-#define ZERO_CHAR  ""
-
-//BMP文件标识符，目前仅支持BM
-#define BITMAP_BM 0x4d42	//Windows3+,NT	Bitmap
-#define BITMAP_BA 0x4142	//OS/2			Bitmap Array
-#define BITMAP_CI 0x4943	//				Color Icon
-#define BITMAP_CP 0x5043	//				Color pointer
-#define BITMAP_IC 0x4349	//				Icon
-#define BITMAP_PT 0x5450	//				Pointer
-
-//按照n字节对齐
-//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
-#pragma pack(2)
-//BMP文件头 定义了文件标识符 文件大小等											14bytes
-struct BmpFileHeader
+namespace Pineter
 {
-	unsigned short			bfType = BITMAP_BM;		//位图标识符				2
-	unsigned int			bfSize;					//文件大小				4
-	const unsigned short	bfReserved1 = 0x00;		//固定置0位				2
-	const unsigned short	bfReserved2 = 0x00;		//固定置0位				2
-	const unsigned int		bfOffBits = 0x36;		//图片信息偏移量			4
-};
+	namespace PImageFileFormat
+	{
+		//0x00
+		#define ZERO_CHAR  ""
 
-//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
-#pragma pack()
-//BMP信息头 定义了图片具体信息													40bytes
-struct BmpInfoHeader
-{
-	const unsigned int		biSize = 40;			//信息头长度				4
-	int						biWidth;				//宽 为负则是翻转			4
-	int						biHeight;				//高						4
-	const unsigned short	biPlanes = 1;			//面数 都是平面图所以置1	2
-	const unsigned short	biBitCount = 24;		//像素位数 3原色8bit分解能	2
-	const unsigned int		biCompression = 0;		//压缩方式 0不压缩			4
-	unsigned int			biSizeImage;			//图像信息大小			4
-	const int				biXPelsPerMeter = 300;	//横向PPI				4
-	const int				biYPelsPerMeter = 300;	//纵向PPI				4
-	const unsigned int		biClrUsed = 0;			//彩色表中的颜色索引数		4
-	const unsigned int		biClrImportant = 0;		//重要颜色索引数 0为都重要	4
-};
+		//BMP文件标识符，目前仅支持BM
+		#define BITMAP_BM 0x4d42	//Windows3+,NT	Bitmap
+		#define BITMAP_BA 0x4142	//OS/2			Bitmap Array
+		#define BITMAP_CI 0x4943	//				Color Icon
+		#define BITMAP_CP 0x5043	//				Color pointer
+		#define BITMAP_IC 0x4349	//				Icon
+		#define BITMAP_PT 0x5450	//				Pointer
 
-class Bmp
-{
-private:
-	//BMP文件头
-	BmpFileHeader header_;
-	//BMP信息头
-	BmpInfoHeader info_;
-	//BMP二进制数据
-	char* bmp_binary_ = nullptr;
-	//补0行偏移量
-	unsigned int row_offset_;
-	//读bmp文件长宽
-	static std::pair<int, int> readBmpSize(const char*);
-	//验证合法性，不合法抛出异常
-	void verifyIntegrity();
-	//根据width与4的模计算行偏移量
-	unsigned int getRowOffset(const unsigned int& width) const;
+		//按照n字节对齐
+		//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
+		#pragma pack(2)
+		//BMP文件头 定义了文件标识符 文件大小等											14bytes
+		
+		class Bmp
+		{
+		private:
+			struct BmpFileHeader
+			{
+				unsigned short			bfType = BITMAP_BM;		//位图标识符				2
+				unsigned int			bfSize;					//文件大小				4
+				const unsigned short	bfReserved1 = 0x00;		//固定置0位				2
+				const unsigned short	bfReserved2 = 0x00;		//固定置0位				2
+				const unsigned int		bfOffBits = 0x36;		//图片信息偏移量			4
+			};
 
-public:
-	//从Raw新建Bmp对象
-	Bmp(Raw& raw);
-	//从BMP文件新建对象
-	Bmp(const char* path);
-	inline ~Bmp() { delete[] bmp_binary_; }
+			//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
+			#pragma pack()
+			//BMP信息头 定义了图片具体信息													40bytes
+			struct BmpInfoHeader
+			{
+				const unsigned int		biSize = 40;			//信息头长度				4
+				int						biWidth;				//宽 为负则是翻转			4
+				int						biHeight;				//高						4
+				const unsigned short	biPlanes = 1;			//面数 都是平面图所以置1	2
+				const unsigned short	biBitCount = 24;		//像素位数 3原色8bit分解能	2
+				const unsigned int		biCompression = 0;		//压缩方式 0不压缩			4
+				unsigned int			biSizeImage;			//图像信息大小			4
+				const int				biXPelsPerMeter = 300;	//横向PPI				4
+				const int				biYPelsPerMeter = 300;	//纵向PPI				4
+				const unsigned int		biClrUsed = 0;			//彩色表中的颜色索引数		4
+				const unsigned int		biClrImportant = 0;		//重要颜色索引数 0为都重要	4
+			};
 
-	inline int getBfSize() const { return header_.bfSize; }
-	inline int getBiSize() const { return info_.biSize; }
-	inline int getRowOffset() const { return row_offset_; }
+			//BMP文件头
+			BmpFileHeader header_;
+			//BMP信息头
+			BmpInfoHeader info_;
+			//BMP二进制数据
+			char* bmp_binary_ = nullptr;
+			//补0行偏移量
+			unsigned int row_offset_;
+			//验证合法性，不合法抛出异常
+			void verifyIntegrity();
+			//根据width与4的模计算行偏移量
+			unsigned int getRowOffset(const unsigned int& width) const;
 
-	//转换到BMP二进制数据(不包含文件头和信息头)
-	char* toBmpBinary(Raw& raw);
-	//写数据到LinearRgb24b类
-	LinearRgb24b* toLinearRgb24b() const;
-	//从Raw类写BMP文件
-	void save(const char* path) const;
+		public:
+			//从Raw新建Bmp对象
+			Bmp(PRaw::Raw& raw);
+			//从BMP文件新建对象
+			Bmp(const char* path);
+			inline ~Bmp() { delete[] bmp_binary_; }
 
-};
+			//转换到BMP二进制数据(不包含文件头和信息头)
+			char* toBmpBinary(PRaw::Raw& raw);
+			//写数据到LinearRgb24b类
+			PRaw::LinearRgb24b* toLinearRgb24b() const;
+			//从Raw类写BMP文件
+			void save(const char* path) const;
+
+		};
+	}
+}

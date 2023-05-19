@@ -21,9 +21,6 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
-    <Filter Include="Header Files\image_header">
-      <UniqueIdentifier>{58f5d312-7066-44f1-8002-8fc249c8d612}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Pineter.qrc">
@@ -75,6 +72,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
