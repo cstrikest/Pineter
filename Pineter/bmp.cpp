@@ -6,6 +6,7 @@ namespace Pineter
 	{
 		Bmp::Bmp(PRaw::Raw& raw)
 		{
+			if (raw.width_ <= 0 || raw.height_ <= 0) throw PException::IllegalBmpFileException();
 			info_.biWidth = raw.width_;
 			info_.biHeight = raw.height_;
 
@@ -14,6 +15,8 @@ namespace Pineter
 			header_.bfSize = (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits;
 			info_.biSizeImage = (info_.biWidth * 3 + row_offset_) * info_.biHeight;
 
+			//检测是否过小
+			if (header_.bfSize <= MIN_BITMAP_SIZE) throw PException::IllegalBmpFileException();
 			bmp_binary_ = new char[header_.bfSize];
 
 			//不含头的BMP格式二进制图像数据
@@ -37,7 +40,14 @@ namespace Pineter
 			ifs.seekg(0, std::ios::beg);
 			//创建临时内存
 			char* buffer = new char[size];
-			if (!ifs.read(buffer, size)) throw PException::FileNotCantWrite(QString(path));
+
+			if (size < MIN_BITMAP_SIZE) throw PException::IllegalBmpFileException();
+
+			if (!ifs.read(buffer, size))
+			{
+				ifs.close();
+				throw PException::FileNotCantWrite(QString(path));
+			}
 			ifs.close();
 
 			memcpy((char*)&header_, buffer, sizeof(BmpFileHeader));
@@ -57,19 +67,20 @@ namespace Pineter
 			if (header_.bfType != 0x4d42 ||
 				header_.bfReserved1 != 0x00 ||
 				header_.bfReserved2 != 0x00 ||
-				info_.biWidth == 0 ||
-				info_.biHeight == 0 ||
+				info_.biWidth <= 0 ||
+				info_.biHeight <= 0 ||
 				header_.bfSize != (info_.biWidth * 3 + row_offset_) * info_.biHeight + header_.bfOffBits ||
-				info_.biSizeImage != (info_.biWidth * 3 + row_offset_) * info_.biHeight)
+				info_.biSizeImage != (info_.biWidth * 3 + row_offset_) * info_.biHeight ||
+				info_.biSizeImage < 4 ||
+				header_.bfSize >= MAX_DATA_SIZE ||
+				header_.bfSize <= 54)
 				throw PException::IllegalBmpFileException();
 		}
 
 		char* Bmp::toBmpBinary(PRaw::Raw& raw)
 		{
 			int offset = getRowOffset(raw.width_);
-			int size = (raw.width_ * 3 + offset) * raw.height_;
-			char* data = new char[size];
-
+			char* data = new char[info_.biSizeImage];
 			unsigned int cursor = 0;
 			//BMP像素顺序从左下开始 所以反转y轴坐标开始遍历
 			for (int j = raw.height_ - 1; j >= 0; --j)

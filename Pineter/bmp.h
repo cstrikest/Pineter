@@ -19,46 +19,48 @@ namespace Pineter
 {
 	namespace PImageFileFormat
 	{
-		//0x00
-		#define ZERO_CHAR  ""
+//0x00
+#define ZERO_CHAR  ""
 
-		//BMP文件标识符，目前仅支持BM
-		#define BITMAP_BM 0x4d42	//Windows3+,NT	Bitmap
-		#define BITMAP_BA 0x4142	//OS/2			Bitmap Array
-		#define BITMAP_CI 0x4943	//				Color Icon
-		#define BITMAP_CP 0x5043	//				Color pointer
-		#define BITMAP_IC 0x4349	//				Icon
-		#define BITMAP_PT 0x5450	//				Pointer
+#define MIN_BITMAP_SIZE 58
 
-		//按照n字节对齐
-		//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
-		#pragma pack(2)
-		//BMP文件头 定义了文件标识符 文件大小等											14bytes
-		
+//BMP文件标识符，目前仅支持BM
+#define BITMAP_BM 0x4d42	//Windows3+,NT	Bitmap
+#define BITMAP_BA 0x4142	//OS/2			Bitmap Array
+#define BITMAP_CI 0x4943	//				Color Icon
+#define BITMAP_CP 0x5043	//				Color pointer
+#define BITMAP_IC 0x4349	//				Icon
+#define BITMAP_PT 0x5450	//				Pointer
+
+
 		class Bmp
 		{
 		private:
+//按照n字节对齐
+//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
+#pragma pack(2)
+//BMP文件头 定义了文件标识符 文件大小等											14bytes
 			struct BmpFileHeader
 			{
 				unsigned short			bfType = BITMAP_BM;		//位图标识符				2
-				unsigned int			bfSize;					//文件大小				4
+				unsigned int			bfSize = 0;				//文件大小				4
 				const unsigned short	bfReserved1 = 0x00;		//固定置0位				2
 				const unsigned short	bfReserved2 = 0x00;		//固定置0位				2
 				const unsigned int		bfOffBits = 0x36;		//图片信息偏移量			4
 			};
 
-			//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
-			#pragma pack()
-			//BMP信息头 定义了图片具体信息													40bytes
+//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
+#pragma pack()
+//BMP信息头 定义了图片具体信息													40bytes
 			struct BmpInfoHeader
 			{
 				const unsigned int		biSize = 40;			//信息头长度				4
-				int						biWidth;				//宽 为负则是翻转			4
-				int						biHeight;				//高						4
+				int						biWidth = 0;			//宽 为负则是翻转			4
+				int						biHeight = 0;			//高						4
 				const unsigned short	biPlanes = 1;			//面数 都是平面图所以置1	2
 				const unsigned short	biBitCount = 24;		//像素位数 3原色8bit分解能	2
 				const unsigned int		biCompression = 0;		//压缩方式 0不压缩			4
-				unsigned int			biSizeImage;			//图像信息大小			4
+				unsigned int			biSizeImage = 0;		//图像信息大小			4
 				const int				biXPelsPerMeter = 300;	//横向PPI				4
 				const int				biYPelsPerMeter = 300;	//纵向PPI				4
 				const unsigned int		biClrUsed = 0;			//彩色表中的颜色索引数		4

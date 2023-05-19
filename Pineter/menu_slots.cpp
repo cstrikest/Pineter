@@ -76,7 +76,6 @@ namespace Pineter
 					file_path_ + QString::fromStdString(e.what()),
 					QMessageBox::Ok
 				);
-
 				return;
 			}
 		}
