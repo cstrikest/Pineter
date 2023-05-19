@@ -1,12 +1,14 @@
 ﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_Pineter.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include "ip.h" 
 #include <qpainter.h>
 #include <qcolor.h>
+
+#include "ui_Pineter.h"
+#include "bmp.h"
+#include "linear_rgb_24bit.h"
 
 class Pineter : public QMainWindow
 {
@@ -32,13 +34,9 @@ private slots:
 	////About
 	//void aboutPineapple();
 
-
-
-
-
 private:
 	Ui::PineterClass ui_;
-	IP* ip_;
+	LinearRgb24b* image_;
 	//已打开文件的path，新建的文件则为空
 	QString file_path_;
 	//void paintEvent(QPaintEvent* event);

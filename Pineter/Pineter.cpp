@@ -3,7 +3,7 @@
 Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 {
 	
-	ip_ = nullptr;
+	image_ = nullptr;
 
 	file_path_ = "";
 	ui_.setupUi(this);
@@ -15,7 +15,7 @@ Pineter::Pineter(QWidget* parent) : QMainWindow(parent)
 
 Pineter::~Pineter()
 {
-	delete ip_;
+	delete image_;
 }
 
 //

@@ -6,7 +6,7 @@
 class LinearRgb24b : public Raw
 {
 public:
-	TripleRGB* data_;
+	TripleRGB* data_ = nullptr;
 
 	LinearRgb24b(const unsigned int& width, const unsigned int& height);
 	inline virtual ~LinearRgb24b() { delete[] data_; }

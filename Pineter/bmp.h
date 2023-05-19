@@ -13,7 +13,7 @@
 //使用包含RGB三个颜色数据的结构代表每个像素（RAW数据)
 
 #include <fstream>
-#include "raw.h"
+#include "linear_rgb_24bit.h"
 #include "pineter_exception.h"
 
 //0x00指针
@@ -66,7 +66,7 @@ private:
 	//BMP信息头
 	BmpInfoHeader info_;
 	//BMP二进制数据
-	char* bmp_binary_;
+	char* bmp_binary_ = nullptr;
 	//补0行偏移量
 	unsigned int row_offset_;
 	//读bmp文件长宽
@@ -89,9 +89,9 @@ public:
 
 	//转换到BMP二进制数据(不包含文件头和信息头)
 	//返回的指针需要delete[]
-	char* toBmpImageDataBinary(Raw& raw);
-	//写数据到Raw类
-	void toRaw(Raw& raw) const;
+	char* toBmpBinary(Raw& raw);
+	//写数据到LinearRgb24b类
+	LinearRgb24b* toLinearRgb24b() const;
 	//从Raw类写BMP文件
 	void save(const char* path) const;
 

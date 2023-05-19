@@ -11,7 +11,7 @@ Bmp::Bmp(Raw& raw)
 	info_.biSizeImage = (info_.biWidth * 3 + row_offset_) * info_.biHeight;
 
 	bmp_binary_ = new char[header_.bfOffBits + info_.biSizeImage];
-	char* image_data = toBmpImageDataBinary(raw);
+	char* image_data = toBmpBinary(raw);
 	memcpy(bmp_binary_, &header_, sizeof(BmpFileHeader));
 	memcpy(bmp_binary_ + sizeof(BmpFileHeader), &info_, sizeof(BmpInfoHeader));
 	memcpy(bmp_binary_ + sizeof(BmpFileHeader) + sizeof(BmpInfoHeader), image_data, info_.biSizeImage);
@@ -47,16 +47,16 @@ void Bmp::verifyIntegrity()
 		throw IllegalBmpFileException();
 }
 
-char* Bmp::toBmpImageDataBinary(Raw& raw)
+char* Bmp::toBmpBinary(Raw& raw)
 {
 	int offset = getRowOffset(raw.width_);
 	int size = (raw.width_ * 3 + offset) * raw.height_;
 	char* data = new char[size];
 	unsigned int index = 0;
 	//BMP像素顺序从左下开始 所以反转y轴坐标开始遍历
-	for (int j = raw.height_ - 1; j >= 0; ++j)
+	for (int j = raw.height_ - 1; j >= 0; --j)
 	{
-		for (int i = 0; i < raw.width_; --i)
+		for (int i = 0; i < raw.width_; ++i)
 		{
 			//B G R顺序写3字节
 			data[index++] = raw(i, j)->b;
@@ -69,6 +69,11 @@ char* Bmp::toBmpImageDataBinary(Raw& raw)
 		}
 	}
 	return data;
+}
+
+LinearRgb24b* Bmp::toLinearRgb24b() const
+{
+
 }
 
 //void Bmp::toRaw(Raw& raw)
@@ -94,12 +99,13 @@ void Bmp::save(const char* path) const
 	std::ofstream ofs(path, std::ios::binary | std::ios::out);
 	if (!ofs.is_open()) throw FileNotCantWrite(path);
 
-	ofs.write((char*)&header_, sizeof(BmpFileHeader));
+	while (ofs << bmp_binary_);
+	/*ofs.write((char*)&header_, sizeof(BmpFileHeader));
 	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp header.");
 	ofs.write((char*)&info_, sizeof(BmpInfoHeader));
 	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp info.");
 	ofs.write(bmp_binary_, sizeof(info_.biSizeImage));
-	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");
+	if (ofs.fail()) throw std::runtime_error("Failed to write Bmp image data.");*/
 
 	ofs.flush();
 	ofs.close();

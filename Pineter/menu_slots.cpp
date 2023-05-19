@@ -4,18 +4,16 @@ void Pineter::fileOpen()
 {
 	QFileDialog dlg(this, "Open a Bitmap file.", "c:\\", "Bitmap Files (*.bmp)");
 	while (dlg.exec())
-	{
 		try
 		{
 			file_path_ = dlg.selectedFiles().first();
-			ip_ = new IP(file_path_);
+			Bmp bmp_reader(file_path_.toLatin1().data());
+			image_ = new LinearRgb24b();
 			this->setWindowTitle(file_path_);
 			break;
 		}
 		catch (std::exception& e)
 		{
-			ip_ = nullptr;
-			delete ip_;
 			file_path_ = "";
 			QMessageBox::warning
 			(
