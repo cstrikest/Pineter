@@ -19,7 +19,7 @@ namespace Pineter
 {
 	namespace PImageFileFormat
 	{
-//0x00
+		//0x00
 #define ZERO_CHAR  ""
 
 #define MIN_BITMAP_SIZE 58
@@ -36,10 +36,10 @@ namespace Pineter
 		class Bmp
 		{
 		private:
-//按照n字节对齐
-//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
+			//按照n字节对齐
+			//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
 #pragma pack(2)
-//BMP文件头 定义了文件标识符 文件大小等											14bytes
+			//BMP文件头 定义了文件标识符 文件大小等											14bytes
 			struct BmpFileHeader
 			{
 				unsigned short			bfType = BITMAP_BM;		//位图标识符				2
@@ -49,9 +49,9 @@ namespace Pineter
 				const unsigned int		bfOffBits = 0x36;		//图片信息偏移量			4
 			};
 
-//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
+			//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
 #pragma pack()
-//BMP信息头 定义了图片具体信息													40bytes
+			//BMP信息头 定义了图片具体信息													40bytes
 			struct BmpInfoHeader
 			{
 				const unsigned int		biSize = 40;			//信息头长度				4

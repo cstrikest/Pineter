@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "raw.h"
+
 namespace Pineter
 {
 	namespace PRaw
@@ -15,8 +16,6 @@ namespace Pineter
 			inline virtual ~LinearRgb24b() { delete[] data_; }
 			LinearRgb24b(const LinearRgb24b&);
 			LinearRgb24b(LinearRgb24b&&) noexcept;
-			LinearRgb24b& operator=(const LinearRgb24b&);
-			LinearRgb24b& operator=(LinearRgb24b&&) noexcept;
 
 			inline int getPixelNum() const { return width_ * height_; }
 			inline int getSize() const { return width_ * height_ * sizeof(TripleRGB); }

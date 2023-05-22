@@ -38,15 +38,19 @@ namespace Pineter
 
 		private:
 			Ui::PineterClass ui_;
+			//正在打开的图片
+			//为空则是没有打开的图片
 			PRaw::LinearRgb24b* image_;
-			//已打开文件的path，新建的文件则为空，作为是否作为文件打开中的状态flg
+			//已打开文件的path
+			//为空则是新建的文件 作为是否作为文件打开中的状态flag
 			QString file_path_;
-			//是否已打开图片
-			bool is_opening;
 			//是否有新的改动
-			bool is_changed;
+			bool is_changed_;
 
 			//void paintEvent(QPaintEvent* event);
+			//更新状态
+			//·菜单项目可用状态
+			void updateState();
 		};
 	}
 }
