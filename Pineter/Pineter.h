@@ -1,18 +1,23 @@
 ﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QStandardPaths>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
 #include <qcolor.h>
 
+
 #include "ui_Pineter.h"
 #include "bmp.h"
 #include "linear_rgb_24bit.h"
+#include "image_func.h"
+
 namespace Pineter
 {
 	namespace Program
 	{
+#define DEFAULT_WORK_PATH QStandardPaths::locate(QStandardPaths::DesktopLocation, "", QStandardPaths::LocateDirectory)
 		class Pineter : public QMainWindow
 		{
 			Q_OBJECT
@@ -24,17 +29,16 @@ namespace Pineter
 		private slots:
 			//菜单槽
 			//File
-			void fileOpen();
-			void fileSave();
-			void fileSaveAs();
-			void fileClose();
-			//void fileQuit();
-			//
-			////Edit 自动生成项
-			//void edit(const char* editFunc);
+			void menuOpen();
+			void menuSave();
+			void menuSaveAs();
+			void menuClose();
+			void menuQuit();
 
-			////About
-			//void aboutPineapple();
+			void menuEVF();
+			//void menuEHF();
+			//void menuPineapple();
+			
 
 		private:
 			Ui::PineterClass ui_;
@@ -51,6 +55,11 @@ namespace Pineter
 			//更新状态
 			//·菜单项目可用状态
 			void updateState();
+
+			void imageOpen();
+			void imageSave();
+			void imageSaveAs();
+			void imageClose();
 		};
 	}
 }

@@ -9,15 +9,19 @@ namespace Pineter
 			ui_.setupUi(this);
 
 			//绑定信号槽
-			connect(ui_.action_Open, &QAction::triggered, this, &Pineter::fileOpen);
-			connect(ui_.action_Save, &QAction::triggered, this, &Pineter::fileSave);
-			connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::fileSaveAs);
-			connect(ui_.action_Close, &QAction::triggered, this, &Pineter::fileClose);
-
+			connect(ui_.action_Open, &QAction::triggered, this, &Pineter::menuOpen);
+			connect(ui_.action_Save, &QAction::triggered, this, &Pineter::menuSave);
+			connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::menuSaveAs);
+			connect(ui_.action_Close, &QAction::triggered, this, &Pineter::menuClose);
+			connect(ui_.action_Quit, &QAction::triggered, this, &Pineter::menuQuit);
+			connect(ui_.actionVertical_Flip, &QAction::triggered, this, &Pineter::menuQuit);
+			//connect(ui_.actionHorizontal_Flip, &QAction::triggered, this, &Pineter::menuQuit);
+			//connect(ui_.actionPineapple, &QAction::triggered, this, &Pineter::menuQuit);
 			//初始化
 			image_ = nullptr;
 			file_path_ = "";
 			is_changed_ = false;
+			ui_.stateLabel->setText("no pic");
 			updateState();
 		}
 
@@ -30,6 +34,10 @@ namespace Pineter
 				ui_.action_Close->setEnabled(false);
 				ui_.actionSave_as->setEnabled(false);
 				ui_.action_Save->setEnabled(false);
+
+				ui_.actionVertical_Flip->setEnabled(false);
+				ui_.actionHorizontal_Flip->setEnabled(false);
+
 				return;
 			}
 
@@ -40,6 +48,9 @@ namespace Pineter
 				ui_.action_Close->setEnabled(true);
 				ui_.actionSave_as->setEnabled(true);
 				ui_.action_Save->setEnabled(false);
+
+				ui_.actionVertical_Flip->setEnabled(true);
+				ui_.actionHorizontal_Flip->setEnabled(true);
 				return;
 			}
 
@@ -50,6 +61,9 @@ namespace Pineter
 				ui_.action_Close->setEnabled(true);
 				ui_.actionSave_as->setEnabled(true);
 				ui_.action_Save->setEnabled(true);
+
+				ui_.actionVertical_Flip->setEnabled(true);
+				ui_.actionHorizontal_Flip->setEnabled(true);
 				return;
 			}
 		}
