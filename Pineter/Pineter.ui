@@ -17,8 +17,8 @@
    <widget class="QLabel" name="stateLabel">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>180</y>
+      <x>10</x>
+      <y>320</y>
       <width>391</width>
       <height>16</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="bw">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>60</y>
+      <x>10</x>
+      <y>10</y>
       <width>75</width>
       <height>24</height>
      </rect>
@@ -43,14 +43,27 @@
    <widget class="QPushButton" name="bh">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>90</y>
+      <x>10</x>
+      <y>40</y>
       <width>75</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>height</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageLabel">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>90</y>
+      <width>331</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
    </widget>
   </widget>
@@ -84,8 +97,12 @@
      </property>
      <addaction name="actionHorizontal_Flip"/>
      <addaction name="actionVertical_Flip"/>
+     <addaction name="actionFull_Reverse"/>
     </widget>
     <addaction name="menuFilp"/>
+    <addaction name="actionRandom_Magenta"/>
+    <addaction name="actionChaos"/>
+    <addaction name="actionVertical_Mosaic"/>
    </widget>
    <widget class="QMenu" name="menu_About">
     <property name="title">
@@ -153,6 +170,26 @@
   <action name="actionSave_as">
    <property name="text">
     <string>Save as...</string>
+   </property>
+  </action>
+  <action name="actionRandom_Magenta">
+   <property name="text">
+    <string>Random Magenta</string>
+   </property>
+  </action>
+  <action name="actionChaos">
+   <property name="text">
+    <string>Chaos</string>
+   </property>
+  </action>
+  <action name="actionVertical_Mosaic">
+   <property name="text">
+    <string>Vertical Mosaic</string>
+   </property>
+  </action>
+  <action name="actionFull_Reverse">
+   <property name="text">
+    <string>Full Reverse</string>
    </property>
   </action>
  </widget>

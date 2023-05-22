@@ -14,9 +14,14 @@ namespace Pineter
 			connect(ui_.actionSave_as, &QAction::triggered, this, &Pineter::menuSaveAs);
 			connect(ui_.action_Close, &QAction::triggered, this, &Pineter::menuClose);
 			connect(ui_.action_Quit, &QAction::triggered, this, &Pineter::menuQuit);
-			connect(ui_.actionVertical_Flip, &QAction::triggered, this, &Pineter::menuQuit);
-			//connect(ui_.actionHorizontal_Flip, &QAction::triggered, this, &Pineter::menuQuit);
-			//connect(ui_.actionPineapple, &QAction::triggered, this, &Pineter::menuQuit);
+			connect(ui_.actionVertical_Flip, &QAction::triggered, this, &Pineter::menuEVF);
+			connect(ui_.actionHorizontal_Flip, &QAction::triggered, this, &Pineter::menuEHF);
+			connect(ui_.actionRandom_Magenta, &QAction::triggered, this, &Pineter::menuERM);
+			connect(ui_.actionChaos, &QAction::triggered, this, &Pineter::menuEC);
+			connect(ui_.actionVertical_Mosaic, &QAction::triggered, this, &Pineter::menuEVM);
+			connect(ui_.actionFull_Reverse, &QAction::triggered, this, &Pineter::menuEFR);
+			
+
 			//初始化
 			image_ = nullptr;
 			file_path_ = "";
@@ -66,6 +71,30 @@ namespace Pineter
 				ui_.actionHorizontal_Flip->setEnabled(true);
 				return;
 			}
+		}
+
+		void Pineter::refreshImage()
+		{
+			// 创建一个新的QImage对象
+			QImage image(image_->width_, image_->height_, QImage::Format_RGB32);
+
+			// 遍历你的图像数据，为每个像素设置r,g,b值
+			for (int y = 0; y < image_->height_; ++y) {
+				for (int x = 0; x < image_->width_; ++x) {
+					image.setPixelColor(x, y, QColor(
+						(*image_)(x, y)->r, 
+						(*image_)(x, y)->g, 
+						(*image_)(x, y)->b));
+				}
+			}
+
+			// 创建一个QPixmap对象并用你的QImage对象来初始化它
+			QPixmap pixmap = QPixmap::fromImage(image);
+
+			// 使用QLabel来显示QPixmap对象
+			ui_.imageLabel->setPixmap(pixmap);
+			ui_.imageLabel->show();
+
 		}
 		//
 		//void Pineter::paintEvent(QPaintEvent* event)

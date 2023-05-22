@@ -36,7 +36,11 @@ namespace Pineter
 			void menuQuit();
 
 			void menuEVF();
-			//void menuEHF();
+			void menuEHF();
+			void menuERM();
+			void menuEC();
+			void menuEVM();
+			void menuEFR();
 			//void menuPineapple();
 			
 
@@ -55,6 +59,7 @@ namespace Pineter
 			//更新状态
 			//·菜单项目可用状态
 			void updateState();
+			void refreshImage();
 
 			void imageOpen();
 			void imageSave();
