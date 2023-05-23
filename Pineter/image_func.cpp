@@ -77,5 +77,59 @@ namespace Pineter
 		{
 			return img >> horizontalFlip >> verticalFlip;
 		}
+
+		void scalingUp(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height)
+		{
+
+		}
+
+		void scalingDown(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height)
+		{
+
+		}
+
+		/*Image resizeBilinear(const Image& src, int targetWidth, int targetHeight) {
+    Image dst(targetWidth, targetHeight);
+
+    float x_ratio = ((float)(src.getWidth() - 1)) / targetWidth;
+    float y_ratio = ((float)(src.getHeight() - 1)) / targetHeight;
+
+    for (int y = 0; y < targetHeight; y++) {
+        for (int x = 0; x < targetWidth; x++) {
+            int x1 = (int)(x_ratio * x);
+            int y1 = (int)(y_ratio * y);
+            float x_diff = (x_ratio * x) - x1;
+            float y_diff = (y_ratio * y) - y1;
+
+            Pixel& topLeft = src(x1, y1);
+            Pixel& topRight = src(min(x1+1, src.getWidth()-1), y1);
+            Pixel& bottomLeft = src(x1, min(y1+1, src.getHeight()-1));
+            Pixel& bottomRight = src(min(x1+1, src.getWidth()-1), min(y1+1, src.getHeight()-1));
+
+            dst(x, y).r = (short) (
+                topLeft.r * (1-x_diff) * (1-y_diff) +
+                topRight.r * x_diff * (1-y_diff) +
+                bottomLeft.r * y_diff * (1-x_diff) +
+                bottomRight.r * x_diff * y_diff
+            );
+
+            dst(x, y).g = (short) (
+                topLeft.g * (1-x_diff) * (1-y_diff) +
+                topRight.g * x_diff * (1-y_diff) +
+                bottomLeft.g * y_diff * (1-x_diff) +
+                bottomRight.g * x_diff * y_diff
+            );
+
+            dst(x, y).b = (short) (
+                topLeft.b * (1-x_diff) * (1-y_diff) +
+                topRight.b * x_diff * (1-y_diff) +
+                bottomLeft.b * y_diff * (1-x_diff) +
+                bottomRight.b * x_diff * y_diff
+            );
+        }
+    }
+
+    return dst;
+}*/
 	}
 }

@@ -23,5 +23,8 @@ namespace Pineter
 		PRaw::LinearRgb24b& horizontalFlip(PRaw::LinearRgb24b& img);
 		PRaw::LinearRgb24b& verticalFlip(PRaw::LinearRgb24b& img);
 		PRaw::LinearRgb24b& fullReverse(PRaw::LinearRgb24b& img);
+
+		void scalingUp(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height);
+		void scalingDown(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height);
 	}
 }
