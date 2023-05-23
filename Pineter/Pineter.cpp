@@ -22,6 +22,7 @@ namespace Pineter
 			connect(ui_.actionFull_Reverse, &QAction::triggered, this, &Pineter::menuEFR);
 
 			//初始化
+
 			image_ = nullptr;
 			file_path_ = "";
 			is_changed_ = false;
@@ -113,8 +114,8 @@ namespace Pineter
 
 		void Pineter::resizeEvent(QResizeEvent* event)
 		{
-			ui_.imageLabel->setGeometry(10, 10, this->width() - 50, this->height() - 55);
-			ui_.stateLabel->setGeometry(5, this->height() - 40, this->width() - 10, 15);
+			ui_.imageLabel->setGeometry(10, 10, this->width() - 20, this->height() - 50);
+			ui_.stateLabel->setGeometry(10, this->height() - 40, this->width() - 10, 15);
 			refreshScreen();
 		}
 

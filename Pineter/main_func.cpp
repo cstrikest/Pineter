@@ -72,6 +72,7 @@ namespace Pineter
 			}
 			imageClose(); 
 			updateState();
+			refreshScreen();
 			return;
 		}
 
@@ -116,7 +117,7 @@ namespace Pineter
 					PImageFileFormat::Bmp bmp_reader(file_path_.toLatin1().data());
 					//从BmpBinary转换到LinearRGB24bit对象
 					image_ = bmp_reader.toLinearRgb24b();
-					ui_.stateLabel->setText("opened.");
+					ui_.stateLabel->setText("opened");
 					break;
 				}
 				catch (std::exception& e)

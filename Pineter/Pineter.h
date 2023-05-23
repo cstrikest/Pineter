@@ -19,6 +19,10 @@ namespace Pineter
 	namespace Program
 	{
 #define DEFAULT_WORK_PATH QStandardPaths::locate(QStandardPaths::DesktopLocation, "", QStandardPaths::LocateDirectory)
+#define STATE_LABEL_NO_IMAGE "no image opened"
+#define STATE_LABEL_IMAGE_OPENED "opened"
+#define STATE_LABEL_IMAGE_CREATED "new image"
+#define STATE_LABEL_IMAGE_CHANGED " * changed"
 		class Pineter : public QMainWindow
 		{
 			Q_OBJECT
