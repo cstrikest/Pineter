@@ -1,12 +1,6 @@
 ﻿# Pineter
 
-个人娱乐项目，显示个图片，能整点滤镜，瞎画两笔。
-
-目的是c++桌面开发学习。
-
-![效果图](https://github.com/cstrikest/Pineter/blob/master/images/md_img_1.jpg?raw=true "Pineter")
-
----
+个人娱乐项目，显示个图片，能整点滤镜，瞎画两笔。（就这也还没太弄好...C++好难...）
 
 因为目的是为了学习C++/Qt，所以不使用除Qt外任何附加的库。
 
@@ -17,3 +11,11 @@
 
 慢慢写，我也不知道会弄成啥样，也不知道想弄成啥样。大伙儿有啥想说的直接给我issue都
 可以，嘿嘿
+
+---
+
+![效果图](https://github.com/cstrikest/Pineter/blob/master/images/md_img_1.jpg?raw=true "Pineter")
+
+---
+
+![菠萝和批](https://github.com/cstrikest/Pineter/blob/master/Pineter.png?raw=true "菠萝和批")
