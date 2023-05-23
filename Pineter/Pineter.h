@@ -6,6 +6,7 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 #include <qcolor.h>
+#include <qpalette.h>
 
 
 #include "ui_Pineter.h"
@@ -55,16 +56,23 @@ namespace Pineter
 			//是否有新的改动
 			bool is_changed_;
 
+			//更新程序状态
+			void updateState();
+			//刷新绘图区
+			void refreshImage();
+			//灰出绘图区
+			void grayOutScreen();
+
+
 			//void paintEvent(QPaintEvent* event);
 			//更新状态
 			//·菜单项目可用状态
-			void updateState();
-			void refreshImage();
 
 			void imageOpen();
 			void imageSave();
 			void imageSaveAs();
 			void imageClose();
+			virtual void resizeEvent(QResizeEvent* event) override;
 		};
 	}
 }

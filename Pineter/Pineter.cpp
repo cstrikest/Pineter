@@ -20,13 +20,13 @@ namespace Pineter
 			connect(ui_.actionChaos, &QAction::triggered, this, &Pineter::menuEC);
 			connect(ui_.actionVertical_Mosaic, &QAction::triggered, this, &Pineter::menuEVM);
 			connect(ui_.actionFull_Reverse, &QAction::triggered, this, &Pineter::menuEFR);
-			
 
 			//初始化
 			image_ = nullptr;
 			file_path_ = "";
 			is_changed_ = false;
 			ui_.stateLabel->setText("no pic");
+			grayOutScreen();
 			updateState();
 		}
 
@@ -94,8 +94,22 @@ namespace Pineter
 			// 使用QLabel来显示QPixmap对象
 			ui_.imageLabel->setPixmap(pixmap);
 			ui_.imageLabel->show();
+			pixmap.~QPixmap();
+			image.~QImage();
 
 		}
+
+		void Pineter::grayOutScreen()
+		{
+			ui_.imageLabel->setPalette(QPalette(QColor(255,0,0)));
+		}
+
+		void Pineter::resizeEvent(QResizeEvent* event)
+		{
+			ui_.imageLabel->setFixedHeight(this->height() - 20);
+			ui_.imageLabel->setFixedWidth(this->width() - 20);
+		}
+
 		//
 		//void Pineter::paintEvent(QPaintEvent* event)
 		//{
