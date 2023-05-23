@@ -94,20 +94,23 @@ namespace Pineter
 			// 使用QLabel来显示QPixmap对象
 			ui_.imageLabel->setPixmap(pixmap);
 			ui_.imageLabel->show();
-			pixmap.~QPixmap();
-			image.~QImage();
 
 		}
 
 		void Pineter::grayOutScreen()
 		{
-			ui_.imageLabel->setPalette(QPalette(QColor(255,0,0)));
+			QImage image(ui_.imageLabel->width(), ui_.imageLabel->height(), QImage::Format_RGB32);
+			image.setColor(0, qRgb(100, 100, 100));
+			QPixmap pixmap = QPixmap::fromImage(image);
+			// 使用QLabel来显示QPixmap对象
+			ui_.imageLabel->setPixmap(pixmap);
+			ui_.imageLabel->show();
 		}
 
 		void Pineter::resizeEvent(QResizeEvent* event)
 		{
-			ui_.imageLabel->setFixedHeight(this->height() - 20);
-			ui_.imageLabel->setFixedWidth(this->width() - 20);
+			ui_.imageLabel->setGeometry(10, 10, this->width() - 10, this->height() - 40);
+			ui_.stateLabel->setGeometry(5,this->height()-5, this->width()-10, 15);
 		}
 
 		//

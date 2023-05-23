@@ -64,7 +64,6 @@ namespace Pineter
 			void grayOutScreen();
 
 
-			//void paintEvent(QPaintEvent* event);
 			//更新状态
 			//·菜单项目可用状态
 
@@ -72,7 +71,9 @@ namespace Pineter
 			void imageSave();
 			void imageSaveAs();
 			void imageClose();
+
 			virtual void resizeEvent(QResizeEvent* event) override;
+			//void paintEvent(QPaintEvent* event) override;
 		};
 	}
 }
