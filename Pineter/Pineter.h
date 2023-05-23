@@ -59,7 +59,7 @@ namespace Pineter
 			//更新程序状态
 			void updateState();
 			//刷新绘图区
-			void refreshImage();
+			void refreshScreen();
 			//灰出绘图区
 			void grayOutScreen();
 

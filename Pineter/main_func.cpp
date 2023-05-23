@@ -25,7 +25,7 @@ namespace Pineter
 			}
 			msgBox.close();
 			imageOpen();
-			refreshImage();
+			refreshScreen();
 			updateState();
 			return;
 		}
@@ -197,34 +197,34 @@ namespace Pineter
 		void Pineter::menuEVF()
 		{
 			*image_ >> PImageFunctions::verticalFlip;
-			refreshImage();
+			refreshScreen();
 		}
 
 		void Pineter::menuEHF()
 		{
 			*image_ >> PImageFunctions::horizontalFlip;
-			refreshImage();
+			refreshScreen();
 		}
 		void Pineter::menuERM()
 		{
 			*image_ >> PImageFunctions::randMagenta;
-			refreshImage();
+			refreshScreen();
 		}
 		void Pineter::menuEC()
 		{
 			*image_ >> PImageFunctions::chaos;
-			refreshImage();
+			refreshScreen();
 		}
 
 		void Pineter::menuEVM()
 		{
 			*image_ >> PImageFunctions::verticalMosaic;
-			refreshImage();
+			refreshScreen();
 		}
 		void Pineter::menuEFR()
 		{
 			*image_ >> PImageFunctions::fullReverse;
-			refreshImage();
+			refreshScreen();
 		}
 
 	}

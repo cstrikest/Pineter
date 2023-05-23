@@ -73,27 +73,31 @@ namespace Pineter
 			}
 		}
 
-		void Pineter::refreshImage()
+		void Pineter::refreshScreen()
 		{
-			// 创建一个新的QImage对象
-			QImage image(image_->width_, image_->height_, QImage::Format_RGB32);
+			if (image_ == nullptr) grayOutScreen();
+			else
+			{
+				// 创建一个新的QImage对象
+				QImage image(image_->width_, image_->height_, QImage::Format_RGB32);
 
-			// 遍历你的图像数据，为每个像素设置r,g,b值
-			for (int y = 0; y < image_->height_; ++y) {
-				for (int x = 0; x < image_->width_; ++x) {
-					image.setPixelColor(x, y, QColor(
-						(*image_)(x, y)->r, 
-						(*image_)(x, y)->g, 
-						(*image_)(x, y)->b));
+				// 遍历你的图像数据，为每个像素设置r,g,b值
+				for (int y = 0; y < image_->height_; ++y) {
+					for (int x = 0; x < image_->width_; ++x) {
+						image.setPixelColor(x, y, QColor(
+							(*image_)(x, y)->r,
+							(*image_)(x, y)->g,
+							(*image_)(x, y)->b));
+					}
 				}
+
+				// 创建一个QPixmap对象并用你的QImage对象来初始化它
+				QPixmap pixmap = QPixmap::fromImage(image);
+
+				// 使用QLabel来显示QPixmap对象
+				ui_.imageLabel->setPixmap(pixmap);
+				ui_.imageLabel->show();
 			}
-
-			// 创建一个QPixmap对象并用你的QImage对象来初始化它
-			QPixmap pixmap = QPixmap::fromImage(image);
-
-			// 使用QLabel来显示QPixmap对象
-			ui_.imageLabel->setPixmap(pixmap);
-			ui_.imageLabel->show();
 
 		}
 
@@ -109,8 +113,9 @@ namespace Pineter
 
 		void Pineter::resizeEvent(QResizeEvent* event)
 		{
-			ui_.imageLabel->setGeometry(10, 10, this->width() - 10, this->height() - 40);
-			ui_.stateLabel->setGeometry(5,this->height()-5, this->width()-10, 15);
+			ui_.imageLabel->setGeometry(10, 10, this->width() - 50, this->height() - 55);
+			ui_.stateLabel->setGeometry(5, this->height() - 40, this->width() - 10, 15);
+			refreshScreen();
 		}
 
 		//
