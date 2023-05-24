@@ -86,9 +86,9 @@ namespace Pineter
 				for (int y = 0; y < image_->height_; ++y) {
 					for (int x = 0; x < image_->width_; ++x) {
 						image.setPixelColor(x, y, QColor(
-							(*image_)(x, y)->r,
-							(*image_)(x, y)->g,
-							(*image_)(x, y)->b));
+							(*image_)(x, y).r,
+							(*image_)(x, y).g,
+							(*image_)(x, y).b));
 					}
 				}
 
