@@ -21,7 +21,7 @@ namespace Pineter
 			inline int getSize() const { return width_ * height_ * sizeof(TripleRGB); }
 
 			//指定像素坐标，返回TripleRGB
-			TripleRGB* operator()(const unsigned int x, const unsigned int y) override;
+			TripleRGB& operator()(unsigned int x, unsigned int y) override;
 		};
 	}
 }

@@ -23,7 +23,7 @@ namespace Pineter
 			inline Raw(const unsigned int& width, const unsigned int& height) : width_(width), height_(height) {}
 
 			//指定像素重载纯虚函数 括号有点不好读，想用多重方括弧。但是好麻烦
-			virtual TripleRGB* operator()(const unsigned int x, const unsigned int y) = 0;
+			virtual TripleRGB& operator()(unsigned int x, unsigned int y) = 0;
 			unsigned int width_;
 			unsigned int height_;
 		};

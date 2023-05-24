@@ -24,10 +24,10 @@ namespace Pineter
 			i.data_ = nullptr;
 		}
 
-		TripleRGB* LinearRgb24b::operator()(const unsigned int x, const unsigned int y)
+		TripleRGB& LinearRgb24b::operator()(const unsigned int x, const unsigned int y)
 		{
 			if (x < 0 || y < 0 || x >= width_ || y >= height_) throw PException::InvalidIndexException(x, y);
-			return data_ + (y * width_ + x);
+			return data_[y * width_ + x];
 		}
 	}
 }

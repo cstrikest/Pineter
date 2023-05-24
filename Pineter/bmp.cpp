@@ -88,9 +88,9 @@ namespace Pineter
 				for (int i = 0; i < raw.width_; ++i)
 				{
 					//B G R顺序写3字节
-					data[cursor++] = raw(i, j)->b;
-					data[cursor++] = raw(i, j)->g;
-					data[cursor++] = raw(i, j)->r;
+					data[cursor++] = raw(i, j).b;
+					data[cursor++] = raw(i, j).g;
+					data[cursor++] = raw(i, j).r;
 					;
 				}
 				for (int o = 0; o < offset; ++o) data[cursor++] = 0;
@@ -120,7 +120,7 @@ namespace Pineter
 					temp.g = bmp_binary_[cursor++];
 					temp.r = bmp_binary_[cursor++];
 
-					*((*image)(x, info_.biHeight - y - 1)) = temp;
+					(*image)(x, info_.biHeight - y - 1) = temp;
 				}
 				for (int o = 0; o < row_offset_; ++o) cursor++;
 				//info_.biWidth * 3 + row_offset_;

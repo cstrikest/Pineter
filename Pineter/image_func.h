@@ -26,5 +26,6 @@ namespace Pineter
 
 		void scalingUp(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height);
 		void scalingDown(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height);
+		PRaw::LinearRgb24b* resizeBilinear(PRaw::LinearRgb24b* src, int targetWidth, int targetHeight);
 	}
 }

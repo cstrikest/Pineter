@@ -118,6 +118,7 @@ namespace Pineter
 					//从BmpBinary转换到LinearRGB24bit对象
 					image_ = bmp_reader.toLinearRgb24b();
 					ui_.stateLabel->setText("opened");
+					image_ = PImageFunctions::resizeBilinear(image_, 400,300);
 					break;
 				}
 				catch (std::exception& e)
