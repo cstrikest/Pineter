@@ -18,4 +18,4 @@
 
 ---
 
-<img src="https://github.com/cstrikest/Pineter/blob/master/Pineter/image/Pineter_128.png?raw=true" title="菠萝和批" style="zoom: 10%;">
+<img src="https://github.com/cstrikest/Pineter/blob/master/Pineter/image/Pineter_128.png?raw=true" title="菠萝和批">
