@@ -7,6 +7,7 @@
 #include <qpainter.h>
 #include <qcolor.h>
 #include <qpalette.h>
+#include <qpixmap.h>
 
 
 #include "ui_Pineter.h"
@@ -46,7 +47,7 @@ namespace Pineter
 			void menuEC();
 			void menuEVM();
 			void menuEFR();
-			//void menuPineapple();
+			void menuPineapple();
 			
 
 		private:

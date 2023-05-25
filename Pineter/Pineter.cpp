@@ -20,6 +20,7 @@ namespace Pineter
 			connect(ui_.actionChaos, &QAction::triggered, this, &Pineter::menuEC);
 			connect(ui_.actionVertical_Mosaic, &QAction::triggered, this, &Pineter::menuEVM);
 			connect(ui_.actionFull_Reverse, &QAction::triggered, this, &Pineter::menuEFR);
+			connect(ui_.actionPineapple, &QAction::triggered, this, &Pineter::menuPineapple);
 
 			//初始化
 
