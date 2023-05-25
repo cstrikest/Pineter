@@ -99,9 +99,16 @@
     <ClInclude Include="image_func.h" />
     <ClInclude Include="pineter_exception.h" />
     <ClInclude Include="raw.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Pineter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Pineter.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
