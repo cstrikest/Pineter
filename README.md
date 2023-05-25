@@ -14,8 +14,8 @@
 
 ---
 
-![效果图](https://github.com/cstrikest/Pineter/blob/master/images/md_img_1.jpg?raw=true "Pineter")
+![效果图](https://github.com/cstrikest/Pineter/md_images/md_img_1.jpg?raw=true "Pineter")
 
 ---
 
-<img src="https://github.com/cstrikest/Pineter/blob/master/Pineter.png?raw=true" title="菠萝和批" style="zoom: 10%;">
+<img src="https://github.com/cstrikest/Pineter/Pineter/image/Pineter_128.png?raw=true" title="菠萝和批" style="zoom: 10%;">
