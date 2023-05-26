@@ -8,22 +8,25 @@
 #include <qcolor.h>
 #include <qpalette.h>
 #include <qpixmap.h>
-
+#include <qrgb.h>
 
 #include "ui_Pineter.h"
 #include "bmp.h"
 #include "linear_rgb_24bit.h"
 #include "image_func.h"
 
-namespace Pineter
-{
-	namespace Program
-	{
+//宏定义
 #define DEFAULT_WORK_PATH QStandardPaths::locate(QStandardPaths::DesktopLocation, "", QStandardPaths::LocateDirectory)
 #define STATE_LABEL_NO_IMAGE "no image opened"
 #define STATE_LABEL_IMAGE_OPENED "opened"
 #define STATE_LABEL_IMAGE_CREATED "new image"
 #define STATE_LABEL_IMAGE_CHANGED " * changed"
+#define QRGB_COLOR_DEFALUT_GARY qRgb(100, 100, 100)
+
+namespace Pineter
+{
+	namespace Program
+	{
 		class Pineter : public QMainWindow
 		{
 			Q_OBJECT
@@ -34,7 +37,6 @@ namespace Pineter
 
 		private slots:
 			//菜单槽
-			//File
 			void menuOpen();
 			void menuSave();
 			void menuSaveAs();
@@ -48,37 +50,26 @@ namespace Pineter
 			void menuEVM();
 			void menuEFR();
 			void menuPineapple();
-			
 
 		private:
+			//GUI
 			Ui::PineterClass ui_;
-			//正在打开的图片
-			//为空则是没有打开的图片
+			//正在打开的图片 为空指针则是没有打开的图片
 			PRaw::LinearRgb24b* image_;
-			//已打开文件的path
-			//为空则是新建的文件 作为是否作为文件打开中的状态flag
+			//已打开文件的path 为空则是新建的文件 作为是否作为文件打开中的状态flag
 			QString file_path_;
 			//是否有新的改动
 			bool is_changed_;
 
-			//更新程序状态
 			void updateState();
-			//刷新绘图区
 			void refreshScreen();
-			//灰出绘图区
 			void grayOutScreen();
-
-
-			//更新状态
-			//·菜单项目可用状态
-
 			void imageOpen();
 			void imageSave();
 			void imageSaveAs();
 			void imageClose();
 
 			virtual void resizeEvent(QResizeEvent* event) override;
-			//void paintEvent(QPaintEvent* event) override;
 		};
 	}
 }

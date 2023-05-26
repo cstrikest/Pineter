@@ -49,7 +49,7 @@
     <ClCompile Include="bmp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_func.cpp">
+    <ClCompile Include="Pinter_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

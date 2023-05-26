@@ -6,6 +6,7 @@ namespace Pineter
 {
 	namespace Program
 	{
+		//打开文件菜单
 		void Pineter::menuOpen()
 		{
 			QMessageBox msgBox;
@@ -30,6 +31,7 @@ namespace Pineter
 			return;
 		}
 
+		//保存文件菜单
 		void Pineter::menuSave()
 		{
 			//新图片 没有保存过的文件
@@ -46,6 +48,7 @@ namespace Pineter
 			return;
 		}
 
+		//另存为菜单
 		void Pineter::menuSaveAs()
 		{
 			imageSaveAs();
@@ -53,6 +56,7 @@ namespace Pineter
 			return;
 		}
 
+		//关闭文件菜单
 		void Pineter::menuClose()
 		{
 			//未保存的更改
@@ -76,6 +80,7 @@ namespace Pineter
 			return;
 		}
 
+		//退出菜单
 		void Pineter::menuQuit()
 		{
 			if (is_changed_)
@@ -95,15 +100,8 @@ namespace Pineter
 			imageClose();
 			this->close();
 		}
-		//void Pineter::menuClose();
-		//void Pineter::fileQuit();
-		//
-		////Edit 自动生成项
-		//void Pineter::edit(const char* editFunc);
-		//
-		////About
-		//void Pineter::aboutPineapple();
 
+		//打开文件函数
 		void Pineter::imageOpen()
 		{
 			//打开文件对话框
@@ -138,6 +136,7 @@ namespace Pineter
 			dlg.close();
 		}
 
+		//保存文件函数
 		void Pineter::imageSave()
 		{
 			try
@@ -158,6 +157,7 @@ namespace Pineter
 			}
 		}
 
+		//另存为函数
 		void Pineter::imageSaveAs()
 		{
 			QFileDialog dlg(this, "Save as...", DEFAULT_WORK_PATH, "Bitmap Files (*.bmp)");
@@ -188,6 +188,7 @@ namespace Pineter
 			dlg.close();
 		}
 
+		//关闭图片函数
 		void Pineter::imageClose()
 		{
 			delete image_;
@@ -196,6 +197,7 @@ namespace Pineter
 			ui_.stateLabel->setText("no pic");
 		}
 
+		//各个图像处理函数的菜单项目
 		void Pineter::menuEVF()
 		{
 			*image_ >> PImageFunctions::verticalFlip;
@@ -207,11 +209,13 @@ namespace Pineter
 			*image_ >> PImageFunctions::horizontalFlip;
 			refreshScreen();
 		}
+
 		void Pineter::menuERM()
 		{
 			*image_ >> PImageFunctions::randMagenta;
 			refreshScreen();
 		}
+
 		void Pineter::menuEC()
 		{
 			*image_ >> PImageFunctions::chaos;
@@ -223,11 +227,14 @@ namespace Pineter
 			*image_ >> PImageFunctions::verticalMosaic;
 			refreshScreen();
 		}
+
 		void Pineter::menuEFR()
 		{
 			*image_ >> PImageFunctions::fullReverse;
 			refreshScreen();
 		}
+
+		//关于Pineapple
 		void Pineter::menuPineapple()
 		{
 			QMessageBox msgBox;
@@ -240,6 +247,109 @@ namespace Pineter
 			msgBox.setStandardButtons(QMessageBox::Ok);
 			msgBox.exec();
 			msgBox.close();
+		}
+
+		//更新程序状态
+		// - 可用菜单项
+		// - 
+		void Pineter::updateState()
+		{
+			//没有打开的图片
+			if (image_ == nullptr)
+			{
+				ui_.action_Open->setEnabled(true);
+				ui_.action_Close->setEnabled(false);
+				ui_.actionSave_as->setEnabled(false);
+				ui_.action_Save->setEnabled(false);
+
+				ui_.actionVertical_Flip->setEnabled(false);
+				ui_.actionHorizontal_Flip->setEnabled(false);
+
+				return;
+			}
+
+			//有打开的图片 没有保存过文件
+			if (image_ != nullptr && file_path_ != "")
+			{
+				ui_.action_Open->setEnabled(true);
+				ui_.action_Close->setEnabled(true);
+				ui_.actionSave_as->setEnabled(true);
+				ui_.action_Save->setEnabled(false);
+
+				ui_.actionVertical_Flip->setEnabled(true);
+				ui_.actionHorizontal_Flip->setEnabled(true);
+				return;
+			}
+
+			//有打开的图片 有保存过文件
+			if (image_ != nullptr && file_path_ != "")
+			{
+				ui_.action_Open->setEnabled(true);
+				ui_.action_Close->setEnabled(true);
+				ui_.actionSave_as->setEnabled(true);
+				ui_.action_Save->setEnabled(true);
+
+				ui_.actionVertical_Flip->setEnabled(true);
+				ui_.actionHorizontal_Flip->setEnabled(true);
+				return;
+			}
+		}
+
+		//刷新图片显示区域内容
+		void Pineter::refreshScreen()
+		{
+			//如果没有图像 全刷灰
+			if (image_ == nullptr) grayOutScreen();
+			else
+			{
+				// 创建一个新的QImage对象
+				QImage image(image_->width_, image_->height_, QImage::Format_RGB32);
+
+				//如果有图像 判断大小
+				//图像比绘图区小，刷灰边缘
+				if (image.width() < ui_.imageLabel->width() or image.height() < ui_.imageLabel->height())
+					image.setColor(0, QRGB_COLOR_DEFALUT_GARY);
+				// 遍历你的图像数据，为每个像素设置r,g,b值
+				for (int y = 0; y < image_->height_; ++y) {
+					for (int x = 0; x < image_->width_; ++x) {
+						image.setPixelColor(x, y, QColor(
+							(*image_)(x, y).r,
+							(*image_)(x, y).g,
+							(*image_)(x, y).b));
+					}
+				}
+
+				// 创建一个QPixmap对象并用你的QImage对象来初始化它
+				QPixmap pixmap = QPixmap::fromImage(image);
+
+				// 使用QLabel来显示QPixmap对象
+				ui_.imageLabel->setPixmap(pixmap);
+				ui_.imageLabel->show();
+
+				image.detach();
+				pixmap.detach();
+
+			}
+
+		}
+
+		//全部刷灰图片显示区
+		void Pineter::grayOutScreen()
+		{
+			QImage image(ui_.imageLabel->width(), ui_.imageLabel->height(), QImage::Format_RGB32);
+			image.setColor(0, QRGB_COLOR_DEFALUT_GARY);
+			QPixmap pixmap = QPixmap::fromImage(image);
+			// 使用QLabel来显示QPixmap对象
+			ui_.imageLabel->setPixmap(pixmap);
+			ui_.imageLabel->show();
+		}
+
+		//窗口大小变化事件
+		void Pineter::resizeEvent(QResizeEvent* event)
+		{
+			ui_.imageLabel->setGeometry(10, 10, this->width() - 20, this->height() - 50);
+			ui_.stateLabel->setGeometry(10, this->height() - 40, this->width() - 10, 15);
+			refreshScreen();
 		}
 	}
 }

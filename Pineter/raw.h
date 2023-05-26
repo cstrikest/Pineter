@@ -1,14 +1,16 @@
 ﻿#pragma once
+
 #include <string>
 #include <iostream>
+
+//最大可容许字节数
+#define MAX_DATA_SIZE (32768 * 32768)
+
 namespace Pineter
 {
 	namespace PRaw
 	{
-		//最大可容许字节数
-#define MAX_DATA_SIZE (32768 * 32768)
-
-//单像素结构
+		//单像素结构
 		struct TripleRGB
 		{
 			unsigned char r;
@@ -46,7 +48,7 @@ namespace Pineter
 	}
 
 	namespace colors
-	{\
+	{
 		//定义颜色
 		constexpr PRaw::TripleRGB BLUE = { 0, 0, 255 };
 		constexpr PRaw::TripleRGB GREEN = { 0, 255, 0 };
