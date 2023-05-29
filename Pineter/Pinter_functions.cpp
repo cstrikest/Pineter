@@ -303,16 +303,27 @@ namespace Pineter
 			else
 			{
 				// 创建一个新的QImage对象
-				QImage image(image_->width_, image_->height_, QImage::Format_RGB32);
+				QImage image(ui_.imageLabel->width(), ui_.imageLabel->height(), QImage::Format_RGB32);
 
-				//如果有图像 判断大小
-				//图像比绘图区小，刷灰边缘
-				if (image.width() < ui_.imageLabel->width() or image.height() < ui_.imageLabel->height())
-					image.setColor(0, QRGB_COLOR_DEFALUT_GARY);
+				//刷灰边缘
+				image.setColor(0, QRGB_COLOR_DEFALUT_GARY);
+
+				//让图像在屏幕中心显示 偏移值
+				int xbias = 0;
+				int ybias = 0;
+				if (image_->width_ < ui_.imageLabel->width() )
+				{
+					xbias = ((int)ui_.imageLabel->width() - (int)image_->width_) / 2;
+				}
+				if (image_->height_ < ui_.imageLabel->height())
+				{
+					ybias = ((int)ui_.imageLabel->height() - (int)image_->height_) / 2;
+				}
+
 				// 遍历你的图像数据，为每个像素设置r,g,b值
 				for (int y = 0; y < image_->height_; ++y) {
 					for (int x = 0; x < image_->width_; ++x) {
-						image.setPixelColor(x, y, QColor(
+						image.setPixelColor(x + xbias, y + ybias, QColor(
 							(*image_)(x, y).r,
 							(*image_)(x, y).g,
 							(*image_)(x, y).b));
@@ -336,6 +347,7 @@ namespace Pineter
 			QImage image(ui_.imageLabel->width(), ui_.imageLabel->height(), QImage::Format_RGB32);
 			image.setColor(0, QRGB_COLOR_DEFALUT_GARY);
 			QPixmap pixmap = QPixmap::fromImage(image);
+
 			// 使用QLabel来显示QPixmap对象
 			ui_.imageLabel->setPixmap(pixmap);
 			ui_.imageLabel->show();
