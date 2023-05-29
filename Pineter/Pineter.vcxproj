@@ -89,6 +89,7 @@
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="linear_rgb_24bit.cpp" />
     <ClCompile Include="image_func.cpp" />
+    <ClCompile Include="Pineter_events.cpp" />
     <ClCompile Include="Pinter_functions.cpp" />
     <ClCompile Include="Pineter.cpp" />
     <ClCompile Include="main.cpp" />

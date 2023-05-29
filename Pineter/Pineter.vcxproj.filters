@@ -52,6 +52,9 @@
     <ClCompile Include="Pinter_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pineter_events.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linear_rgb_24bit.h">

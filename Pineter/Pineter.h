@@ -9,6 +9,7 @@
 #include <qpalette.h>
 #include <qpixmap.h>
 #include <qrgb.h>
+#include <QMouseEvent>
 
 #include "ui_Pineter.h"
 #include "bmp.h"
@@ -70,6 +71,9 @@ namespace Pineter
 			void imageClose();
 
 			virtual void resizeEvent(QResizeEvent* event) override;
+
+		protected:
+			void wheelEvent(QWheelEvent* event);
 		};
 	}
 }

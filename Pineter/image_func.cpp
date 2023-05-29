@@ -79,17 +79,7 @@ namespace Pineter
 			return img >> horizontalFlip >> verticalFlip;
 		}
 
-		void scalingUp(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height)
-		{
-
-		}
-
-		void scalingDown(PRaw::LinearRgb24b& img, unsigned int& width, unsigned int& height)
-		{
-
-		}
-
-		PRaw::LinearRgb24b* resizeBilinear(PRaw::LinearRgb24b* src, int targetWidth, int targetHeight) 
+		PRaw::LinearRgb24b* resizeBilinear(PRaw::LinearRgb24b* src, unsigned int targetWidth, unsigned int targetHeight)
 		{
 			PRaw::LinearRgb24b* dst = new PRaw::LinearRgb24b(targetWidth, targetHeight);
 
@@ -132,6 +122,7 @@ namespace Pineter
 						);
 				}
 			}
+			delete src;
 			return dst;
 		}
 	}

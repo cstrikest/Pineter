@@ -318,7 +318,6 @@ namespace Pineter
 							(*image_)(x, y).b));
 					}
 				}
-
 				// 创建一个QPixmap对象并用你的QImage对象来初始化它
 				QPixmap pixmap = QPixmap::fromImage(image);
 
@@ -328,9 +327,7 @@ namespace Pineter
 
 				image.detach();
 				pixmap.detach();
-
 			}
-
 		}
 
 		//全部刷灰图片显示区
