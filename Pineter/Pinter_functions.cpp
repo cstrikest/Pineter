@@ -269,7 +269,7 @@ namespace Pineter
 			}
 
 			//有打开的图片 没有保存过文件
-			if (image_ != nullptr && file_path_ != "")
+			if (image_ != nullptr && file_path_ == "")
 			{
 				ui_.action_Open->setEnabled(true);
 				ui_.action_Close->setEnabled(true);
