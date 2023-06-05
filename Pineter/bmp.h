@@ -12,14 +12,7 @@
 //BMP文件操作类 定义BMP文件结构与读写函数
 //使用包含RGB三个颜色数据的结构代表每个像素（RAW数据)
 
-#include <fstream>
-#include "linear_rgb_24bit.h"
-#include "pineter_exception.h"
-namespace Pineter
-{
-	namespace PImageFileFormat
-	{
-		//0x00
+//0x00
 #define ZERO_CHAR  ""
 
 #define MIN_BITMAP_SIZE 58
@@ -32,14 +25,20 @@ namespace Pineter
 #define BITMAP_IC 0x4349	//				Icon
 #define BITMAP_PT 0x5450	//				Pointer
 
-
+#include <fstream>
+#include "linear_rgb_24bit.h"
+#include "pineter_exception.h"
+namespace Pineter
+{
+	namespace PImageFileFormat
+	{
 		class Bmp
 		{
 		private:
 			//按照n字节对齐
 			//不对齐的话bfSize会落到0x04上，文件头就会变成16字节，无法读取
 #pragma pack(2)
-			//BMP文件头 定义了文件标识符 文件大小等											14bytes
+//BMP文件头 定义了文件标识符 文件大小等											14bytes
 			struct BmpFileHeader
 			{
 				unsigned short			bfType = BITMAP_BM;		//位图标识符				2
@@ -51,7 +50,7 @@ namespace Pineter
 
 			//这里按min(SIZE,MAX_SIZE)对齐正好，所以恢复默认
 #pragma pack()
-			//BMP信息头 定义了图片具体信息													40bytes
+//BMP信息头 定义了图片具体信息													40bytes
 			struct BmpInfoHeader
 			{
 				const unsigned int		biSize = 40;			//信息头长度				4
